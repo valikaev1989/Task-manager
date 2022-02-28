@@ -5,14 +5,14 @@ import java.util.Objects;
 
 public class EpicTask  extends Task{
 
-    ArrayList<Integer> idUnderTasks = new ArrayList<>();
+    ArrayList<Integer> idSubTasks = new ArrayList<>();
 
-    public ArrayList<Integer> getIdUnderTasks() {
-        return idUnderTasks;
+    public ArrayList<Integer> getIdSubTasks() {
+        return idSubTasks;
     }
 
-    public void setIdUnderTasks(int idUnderTasks) {
-        this.idUnderTasks.add(idUnderTasks);
+    public void setIdSubTasks(int idSubTasks) {
+        this.idSubTasks.add(idSubTasks);
     }
 
     @Override
@@ -21,20 +21,21 @@ public class EpicTask  extends Task{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         EpicTask epicTask = (EpicTask) o;
-        return Objects.equals(idUnderTasks, epicTask.idUnderTasks);
+        return Objects.equals(idSubTasks, epicTask.idSubTasks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), idUnderTasks);
+        return Objects.hash(super.hashCode(), idSubTasks);
     }
 
     @Override
     public String toString() {
         return "EpicTask{" +
-                "nameTask='" + nameTask + '\'' +
+                "idSubTasks=" + idSubTasks +
+                ", nameTask='" + nameTask + '\'' +
                 ", status=" + status +
-                ", idEpicTask=" + id +
+                ", id=" + id +
                 '}';
     }
 }

@@ -2,10 +2,10 @@ package ru.yandex.praktikum.Task;
 
 import java.util.Objects;
 
-public  class UnderTask extends Task {
+public  class SubTask extends Task {
     private int idEpicTask;
 
-    public UnderTask() {
+    public SubTask() {
     }
 
     public int getIdEpicTask() {
@@ -21,8 +21,8 @@ public  class UnderTask extends Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        UnderTask underTask = (UnderTask) o;
-        return idEpicTask == underTask.idEpicTask;
+        SubTask subTask = (SubTask) o;
+        return idEpicTask == subTask.idEpicTask;
     }
 
     @Override
@@ -32,10 +32,10 @@ public  class UnderTask extends Task {
 
     @Override
     public String toString() {
-        return "UnderTask{" +
+        return "SubTask{" +
                 "nameTask='" + nameTask + '\'' +
                 ", status=" + status +
-                ", idUnderTask=" + id +
+                ", idSubTask=" + id +
                 ", idEpicTask=" + idEpicTask +
                 '}';
     }
