@@ -3,15 +3,15 @@ package ru.yandex.praktikum.Task;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class EpicTask  extends Task{
+public class EpicTask extends Task {
 
-    ArrayList<Integer> idSubTasks = new ArrayList<>();
+    ArrayList<Long> idSubTasks = new ArrayList<>();
 
-    public ArrayList<Integer> getIdSubTasks() {
+    public ArrayList<Long> getIdSubTasks() {
         return idSubTasks;
     }
 
-    public void setIdSubTasks(int idSubTasks) {
+    public void setIdSubTasks(long idSubTasks) {
         this.idSubTasks.add(idSubTasks);
     }
 
@@ -32,10 +32,10 @@ public class EpicTask  extends Task{
     @Override
     public String toString() {
         return "EpicTask{" +
-                "idSubTasks=" + idSubTasks +
-                ", nameTask='" + nameTask + '\'' +
-                ", status=" + status +
-                ", id=" + id +
+                "nameTask='" + getNameTask() + '\''
+                + ", status=" + getStatus() +
+                ", idEpicTask=" + getId() +
+                ", idSubTasks=" + idSubTasks +
                 '}';
     }
 }

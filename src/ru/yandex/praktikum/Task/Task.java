@@ -3,20 +3,20 @@ package ru.yandex.praktikum.Task;
 import java.util.Objects;
 
 public class Task {
-    protected String nameTask;
-    protected String description;
-    protected TaskStatus status;
-    protected int id;
+    private String nameTask;
+    private String description;
+    private TaskStatus status;
+    private long id; //id генерируется в классе TaskManager, при создании каждого вида задач.
 
     public Task() {
         status = TaskStatus.NEW;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

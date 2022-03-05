@@ -3,16 +3,16 @@ package ru.yandex.praktikum.Task;
 import java.util.Objects;
 
 public  class SubTask extends Task {
-    private int idEpicTask;
+    private long idEpicTask;
 
     public SubTask() {
     }
 
-    public int getIdEpicTask() {
+    public long getIdEpicTask() {
         return idEpicTask;
     }
 
-    public void setIdEpicTask(int idEpicTask) {
+    public void setIdEpicTask(long idEpicTask) {
         this.idEpicTask = idEpicTask;
     }
 
@@ -33,9 +33,9 @@ public  class SubTask extends Task {
     @Override
     public String toString() {
         return "SubTask{" +
-                "nameTask='" + nameTask + '\'' +
-                ", status=" + status +
-                ", idSubTask=" + id +
+                "nameTask='" + getNameTask() + '\'' +
+                ", status=" + getStatus() +
+                ", idSubTask=" + getId() +
                 ", idEpicTask=" + idEpicTask +
                 '}';
     }
