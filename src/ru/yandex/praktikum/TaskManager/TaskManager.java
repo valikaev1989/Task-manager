@@ -117,6 +117,9 @@ public class TaskManager {
             tasks.remove(id);
         } else if (epics.containsKey(id)) { //удаление эпика из мапы и очистка листа с ид SubTask в EpicTask
             EpicTask epicTask = epics.get(id);
+            for (long idSubTask : epicTask.getIdSubTasks()) { //удаление подзадач из мапы subTasks в классе TaskManager
+                subTasks.remove(idSubTask);
+            }
             epicTask.getIdSubTasks().clear();
             epics.remove(id);
         } else if (subTasks.containsKey(id)) {
