@@ -85,9 +85,25 @@ public class App {
         // печатаем задачи:
         printAllTask();
 
-        //удаляем задачу "Заработать на слона со статусом"
+        //удаляем задачи из эпика "Купить слона":
         taskManager.deleteTasksOnId(subTask1.getId());
-        System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Заработать на слона' со статусом IN_PROGRESS в эпике 'Купить слона'");
+        System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Заработать на слона' со статусом 'IN_PROGRESS' в эпике 'Купить слона'");
+        System.out.println("Сложная Задача: ");
+        System.out.println(epic1 + System.lineSeparator() + "подзадачи(" + epic1.getNameTask() + "):");
+        for (long idSubTask : epic1.getIdSubTasks()) {
+            System.out.println(taskManager.getSubTaskFromId(idSubTask));
+        }
+
+        taskManager.deleteTasksOnId(subTask2.getId());
+        System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Найти объявление о продаже слона' со статусом 'DONE' в эпике 'Купить слона'");
+        System.out.println("Сложная Задача: ");
+        System.out.println(epic1 + System.lineSeparator() + "подзадачи(" + epic1.getNameTask() + "):");
+        for (long idSubTask : epic1.getIdSubTasks()) {
+            System.out.println(taskManager.getSubTaskFromId(idSubTask));
+        }
+
+        taskManager.deleteTasksOnId(subTask3.getId());
+        System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Приехать за слоном' со статусом 'NEW' в эпике 'Купить слона'");
         System.out.println("Сложная Задача: ");
         System.out.println(epic1 + System.lineSeparator() + "подзадачи(" + epic1.getNameTask() + "):");
         for (long idSubTask : epic1.getIdSubTasks()) {

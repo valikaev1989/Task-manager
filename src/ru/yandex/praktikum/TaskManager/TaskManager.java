@@ -9,35 +9,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-    private long indetifierNumber = 1;
+    private long indetifierNumber = 0;
     private final HashMap<Long, Task> tasks = new HashMap<>();
     private final HashMap<Long, EpicTask> epics = new HashMap<>();
     private final HashMap<Long, SubTask> subTasks = new HashMap<>();
 
-    private void generateID() {
+    private long generateID() {
         indetifierNumber++;
+        return indetifierNumber;
     }
 
     //Статусы у задач по умолчанию NEW
     //Проверка наличия подзадач и статусов задач в методах обновления(update)
     public void createTask(Task task) {
-        tasks.put(indetifierNumber, task);
-        task.setId(indetifierNumber);
-        generateID();
+        task.setId(generateID());
+        tasks.put(task.getId(), task);
     }
 
     public void createEpicTask(EpicTask epicTask) {
-        epics.put(indetifierNumber, epicTask);
-        epicTask.setId(indetifierNumber);
-        generateID();
+        epicTask.setId(generateID());
+        epics.put(epicTask.getId(), epicTask);
     }
 
     public void createSubTask(SubTask subTask) {
-        subTasks.put(indetifierNumber, subTask);
-        subTask.setId(indetifierNumber);
+        subTask.setId(generateID());
+        subTasks.put(subTask.getId(), subTask);
         EpicTask epicTask = epics.get(subTask.getIdEpicTask());
-        epicTask.setIdSubTasks(indetifierNumber);
-        generateID();
+        epicTask.setIdSubTasks(subTask.getId());
     }
 
     public void clearAllTask() {
@@ -93,9 +91,17 @@ public class TaskManager {
     // 4.во всех остальных случаях статус должен быть IN_PROGRESS.
     public void updateEpicTask(EpicTask epicTask) {
         ArrayList<String> statusDone = new ArrayList<>();
+        ArrayList<String> statusNew = new ArrayList<>();
         for (long idSubTask : epicTask.getIdSubTasks()) {
             SubTask subTask = subTasks.get(idSubTask);
-            if (subTask.getStatus().equals(TaskStatus.IN_PROGRESS)) {
+            if (epicTask.getIdSubTasks().isEmpty()) {
+                epicTask.setStatus(TaskStatus.NEW);
+            } else if (subTask.getStatus().equals(TaskStatus.NEW)) {
+                statusNew.add("New");
+                if (statusNew.size() == epicTask.getIdSubTasks().size()) {
+                    epicTask.setStatus(TaskStatus.NEW);
+                }
+            } else if (subTask.getStatus().equals(TaskStatus.IN_PROGRESS)) {
                 epicTask.setStatus(TaskStatus.IN_PROGRESS);
             } else if (subTask.getStatus().equals(TaskStatus.DONE)) {
                 statusDone.add("Done");
@@ -118,6 +124,7 @@ public class TaskManager {
             EpicTask epicTask = epics.get(subTask.getIdEpicTask());
             epicTask.getIdSubTasks().remove(id); //удаление подзадачи из списка ид SubTask в EpicTask
             subTasks.remove(id);
+            updateEpicTask(epicTask);
         } else System.out.println("Такой задачи нет");
     }
 
