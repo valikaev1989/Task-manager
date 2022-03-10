@@ -6,7 +6,7 @@ public class Task {
     private String nameTask;
     private String description;
     private TaskStatus status;
-    private Long id; //id генерируется в классе TaskManager, при создании каждого вида задач.
+    private Long id; //id генерируется в классе inMemoryTaskManager, при создании каждого вида задач.
 
     public Task() {
         status = TaskStatus.NEW;
