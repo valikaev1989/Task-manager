@@ -7,13 +7,30 @@ import ru.yandex.praktikum.Task.SubTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class InMemoryTaskManager implements TaskManager, HistoryManager {
+public class InMemoryTaskManager implements TaskManager, Managers {
+    private HistoryManager historyManager = Managers.getDefaultHistory();
     private long indetifierNumber = 0;
-    private final HashMap<Long, Task> tasks = new HashMap<>();
-    private final HashMap<Long, EpicTask> epics = new HashMap<>();
-    private final HashMap<Long, SubTask> subTasks = new HashMap<>();
+    private HashMap<Long, Task> tasks = new HashMap<>();
+    private HashMap<Long, EpicTask> epics = new HashMap<>();
+    private HashMap<Long, SubTask> subTasks = new HashMap<>();
 
+    public HistoryManager getHistoryManager() { //метод возвращения списка истории просмотров, строка 180.
+        return historyManager;
+    }
+
+    public HashMap<Long, Task> getTasks() {
+        return tasks;
+    }
+
+    public HashMap<Long, EpicTask> getEpics() {
+        return epics;
+    }
+
+    public HashMap<Long, SubTask> getSubTasks() {
+        return subTasks;
+    }
 
     @Override
     public long generateID() {
@@ -49,10 +66,11 @@ public class InMemoryTaskManager implements TaskManager, HistoryManager {
     }
 
     @Override
-    public Task getTaskFromId(long id) {
+    public Task getTask(long id) {
         Task task = new Task();
         if (tasks.containsKey(id)) {
             task = tasks.get(id);
+            historyManager.add(task); //добавление задачи в список истории просмотров
         } else {
             System.out.println("Нет такой задачи");
         }
@@ -60,10 +78,11 @@ public class InMemoryTaskManager implements TaskManager, HistoryManager {
     }
 
     @Override
-    public EpicTask getEpicTaskFromId(long id) {
+    public EpicTask getEpicTask(long id) {
         EpicTask epic = new EpicTask();
         if (epics.containsKey(id)) {
             epic = epics.get(id);
+            historyManager.add(epic); //добавление задачи в список истории просмотров
         } else {
             System.out.println("Нет такой задачи");
         }
@@ -71,10 +90,11 @@ public class InMemoryTaskManager implements TaskManager, HistoryManager {
     }
 
     @Override
-    public SubTask getSubTaskFromId(long id) {
+    public SubTask getSubTask(long id) {
         SubTask subTask = new SubTask();
         if (subTasks.containsKey(id)) {
             subTask = subTasks.get(id);
+            historyManager.add(subTask); //добавление задачи в список истории просмотров
         } else {
             System.out.println("Нет такой задачи");
         }
@@ -157,13 +177,7 @@ public class InMemoryTaskManager implements TaskManager, HistoryManager {
         return new ArrayList<>(epics.values());
     }
 
-    @Override
-    public void add(Task task) {
-
-    }
-
-    @Override
-    public ArrayList<Task> getHistory() {
-        return null;
+    public List<Task> getListHistory() {
+        return historyManager.getHistory();
     }
 }

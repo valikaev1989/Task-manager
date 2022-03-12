@@ -6,11 +6,13 @@ import ru.yandex.praktikum.Task.Task;
 import ru.yandex.praktikum.Task.TaskStatus;
 import ru.yandex.praktikum.TaskManager.InMemoryTaskManager;
 
+import java.util.List;
+
 public class App {
     InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
     public void start() {
-        cycleCheckTechTask();
+        cycleCheckTechTask(); // печать истории просмотра, строка 137
     }
 
     public void cycleCheckTechTask() {
@@ -59,7 +61,7 @@ public class App {
         printAllTask();
 
         // меняем статусы задачи1:
-        System.out.println("Меняем статус задачи '" + task1.getNameTask() + "' на: " + TaskStatus.DONE + ".");
+        System.out.println(System.lineSeparator() + "Меняем статус задачи '" + task1.getNameTask() + "' на: " + TaskStatus.DONE + ".");
         task1.setStatus(TaskStatus.DONE);
         inMemoryTaskManager.updateTask(task1);
 
@@ -79,35 +81,42 @@ public class App {
         inMemoryTaskManager.updateSubTask(subTask2);
 
         // меняем статусы подзадачи3(epic2):
-        System.out.println("Меняем статус подзадачи '" + subTask4.getNameTask() + "' на: " + TaskStatus.DONE + ".");
+        System.out.println("Меняем статус подзадачи '" + subTask4.getNameTask() + "' на: " + TaskStatus.DONE + "."
+                + System.lineSeparator());
         subTask4.setStatus(TaskStatus.DONE);
         inMemoryTaskManager.updateSubTask(subTask4);
         // печатаем задачи:
         printAllTask();
+        System.out.println(" ");
+        printHistory(); // печать истории просмотра, строка 137
 
         //удаляем задачи из эпика "Купить слона":
         inMemoryTaskManager.deleteTasksOnId(subTask1.getId());
         System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Заработать на слона' со статусом 'IN_PROGRESS' в эпике 'Купить слона'");
         System.out.println("Сложная Задача: ");
         System.out.println(epic1 + System.lineSeparator() + "подзадачи(" + epic1.getNameTask() + "):");
-        for (long idSubTask : epic1.getIdSubTasks()) {
-            System.out.println(inMemoryTaskManager.getSubTaskFromId(idSubTask));
+        for (Task task : inMemoryTaskManager.getListSubTaskFromEpic(epic1.getId())) {
+            System.out.println(task);
         }
 
         inMemoryTaskManager.deleteTasksOnId(subTask2.getId());
         System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Найти объявление о продаже слона' со статусом 'DONE' в эпике 'Купить слона'");
         System.out.println("Сложная Задача: ");
         System.out.println(epic1 + System.lineSeparator() + "подзадачи(" + epic1.getNameTask() + "):");
-        for (long idSubTask : epic1.getIdSubTasks()) {
-            System.out.println(inMemoryTaskManager.getSubTaskFromId(idSubTask));
+        for (Task task : inMemoryTaskManager.getListSubTaskFromEpic(epic1.getId())) {
+            System.out.println(task);
         }
 
         inMemoryTaskManager.deleteTasksOnId(subTask3.getId());
         System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Приехать за слоном' со статусом 'NEW' в эпике 'Купить слона'");
         System.out.println("Сложная Задача: ");
         System.out.println(epic1 + System.lineSeparator() + "подзадачи(" + epic1.getNameTask() + "):");
-        for (long idSubTask : epic1.getIdSubTasks()) {
-            System.out.println(inMemoryTaskManager.getSubTaskFromId(idSubTask));
+        if (epic1.getIdSubTasks().isEmpty()) {
+            System.out.println("список пуст");
+        } else {
+            for (Task task : inMemoryTaskManager.getListSubTaskFromEpic(epic1.getId())) {
+                System.out.println(task);
+            }
         }
     }
 
@@ -116,11 +125,36 @@ public class App {
         for (Task task : inMemoryTaskManager.getListTask()) {
             System.out.println(task);
         }
-        System.out.println("Сложные Задачи: ");
+        System.out.println(System.lineSeparator() + "Сложные Задачи: ");
         for (EpicTask epic : inMemoryTaskManager.getListEpicTask()) {
             System.out.println(epic + System.lineSeparator() + "подзадачи(" + epic.getNameTask() + "):");
-            for (long idSubTask : epic.getIdSubTasks()) {
-                System.out.println(inMemoryTaskManager.getSubTaskFromId(idSubTask));
+            for (Task task : inMemoryTaskManager.getListSubTaskFromEpic(epic.getId())) {
+                System.out.println(task);
+            }
+        }
+    }
+
+    public void printHistory() { //метод проверки истории просмотра
+        List<Task> historyList = inMemoryTaskManager.getHistoryManager().getHistory();
+        inMemoryTaskManager.getTask(1);
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getEpicTask(3);
+        inMemoryTaskManager.getSubTask(4);
+        inMemoryTaskManager.getSubTask(5);
+        inMemoryTaskManager.getSubTask(6);
+        inMemoryTaskManager.getEpicTask(7);
+        inMemoryTaskManager.getSubTask(8);
+        inMemoryTaskManager.getTask(1);
+        inMemoryTaskManager.getTask(2);
+        inMemoryTaskManager.getEpicTask(3);
+        inMemoryTaskManager.getSubTask(4);
+        inMemoryTaskManager.getSubTask(5);
+        if (historyList.isEmpty()) {
+            System.out.println("История просмотров пуста");
+        } else {
+            System.out.println("История просмотров задач:");
+            for (int i = 0; i < historyList.size(); i++) {
+                System.out.println((i + 1) + ": " + historyList.get(i));
             }
         }
     }

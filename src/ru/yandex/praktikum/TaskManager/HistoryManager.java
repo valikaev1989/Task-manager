@@ -2,10 +2,10 @@ package ru.yandex.praktikum.TaskManager;
 
 import ru.yandex.praktikum.Task.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public interface HistoryManager extends Managers{
+public interface HistoryManager extends Managers {
     void add(Task task);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }

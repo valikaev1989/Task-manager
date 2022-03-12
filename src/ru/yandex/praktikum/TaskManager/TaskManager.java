@@ -6,7 +6,7 @@ import ru.yandex.praktikum.Task.Task;
 
 import java.util.ArrayList;
 
-public interface TaskManager extends Managers{
+public interface TaskManager extends Managers {
     long generateID();
 
     void createTask(Task task);
@@ -17,11 +17,11 @@ public interface TaskManager extends Managers{
 
     void clearAllTask();
 
-    Task getTaskFromId(long id);
+    Task getTask(long id);
 
-    EpicTask getEpicTaskFromId(long id);
+    EpicTask getEpicTask(long id);
 
-    SubTask getSubTaskFromId(long id);
+    SubTask getSubTask(long id);
 
     void updateTask(Task task);
 
@@ -36,4 +36,5 @@ public interface TaskManager extends Managers{
     ArrayList<Task> getListTask();
 
     ArrayList<EpicTask> getListEpicTask();
+
 }
