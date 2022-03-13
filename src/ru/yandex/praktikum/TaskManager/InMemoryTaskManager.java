@@ -9,16 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTaskManager implements TaskManager, Managers {
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+public class InMemoryTaskManager implements TaskManager {
+    private HistoryManager historyManager = Managers.getDefaultHistory();// получение экземпляра InMemoryHistoryManager
     private long indetifierNumber = 0;
     private HashMap<Long, Task> tasks = new HashMap<>();
     private HashMap<Long, EpicTask> epics = new HashMap<>();
     private HashMap<Long, SubTask> subTasks = new HashMap<>();
-
-    public HistoryManager getHistoryManager() { //метод возвращения списка истории просмотров, строка 180.
-        return historyManager;
-    }
 
     public HashMap<Long, Task> getTasks() {
         return tasks;
@@ -30,6 +26,13 @@ public class InMemoryTaskManager implements TaskManager, Managers {
 
     public HashMap<Long, SubTask> getSubTasks() {
         return subTasks;
+    }
+
+    @Override
+    public List<Task> getHistoryList() { // переписанный метод возврата списка последних 10 просмотренных задач
+        List<Task> historyList;
+        historyList = historyManager.getHistory();
+        return historyList;
     }
 
     @Override
@@ -177,7 +180,4 @@ public class InMemoryTaskManager implements TaskManager, Managers {
         return new ArrayList<>(epics.values());
     }
 
-    public List<Task> getListHistory() {
-        return historyManager.getHistory();
-    }
 }

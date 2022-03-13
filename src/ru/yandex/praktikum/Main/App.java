@@ -135,7 +135,6 @@ public class App {
     }
 
     public void printHistory() { //метод проверки истории просмотра
-        List<Task> historyList = inMemoryTaskManager.getHistoryManager().getHistory();
         inMemoryTaskManager.getTask(1);
         inMemoryTaskManager.getTask(2);
         inMemoryTaskManager.getEpicTask(3);
@@ -149,12 +148,13 @@ public class App {
         inMemoryTaskManager.getEpicTask(3);
         inMemoryTaskManager.getSubTask(4);
         inMemoryTaskManager.getSubTask(5);
-        if (historyList.isEmpty()) {
+        List<Task> history = inMemoryTaskManager.getHistoryList();
+        if (history.isEmpty()) {
             System.out.println("История просмотров пуста");
         } else {
             System.out.println("История просмотров задач:");
-            for (int i = 0; i < historyList.size(); i++) {
-                System.out.println((i + 1) + ": " + historyList.get(i));
+            for (int i = 0; i < history.size(); i++) {
+                System.out.println((i + 1) + ": " + history.get(i));
             }
         }
     }

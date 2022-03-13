@@ -5,6 +5,7 @@ import ru.yandex.praktikum.Task.SubTask;
 import ru.yandex.praktikum.Task.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager extends Managers {
     long generateID();
@@ -36,5 +37,7 @@ public interface TaskManager extends Managers {
     ArrayList<Task> getListTask();
 
     ArrayList<EpicTask> getListEpicTask();
+
+    List<Task> getHistoryList(); // метод возврата списка последних просмотренных заданий
 
 }
