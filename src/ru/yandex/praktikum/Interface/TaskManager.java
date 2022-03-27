@@ -1,10 +1,11 @@
-package ru.yandex.praktikum.TaskManager;
+package ru.yandex.praktikum.Interface;
 
 import ru.yandex.praktikum.Task.EpicTask;
 import ru.yandex.praktikum.Task.SubTask;
 import ru.yandex.praktikum.Task.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager extends Managers {
@@ -39,5 +40,9 @@ public interface TaskManager extends Managers {
     ArrayList<EpicTask> getListEpicTask();
 
     List<Task> getHistoryList(); // метод возврата списка последних просмотренных заданий
+
+    public HashMap<Long, Task> getTasks();
+    public HashMap<Long, EpicTask> getEpics();
+    public HashMap<Long, SubTask> getSubTasks();
 
 }

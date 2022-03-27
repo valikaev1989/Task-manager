@@ -1,5 +1,8 @@
 package ru.yandex.praktikum.TaskManager;
 
+import ru.yandex.praktikum.Interface.HistoryManager;
+import ru.yandex.praktikum.Interface.Managers;
+import ru.yandex.praktikum.Interface.TaskManager;
 import ru.yandex.praktikum.Task.EpicTask;
 import ru.yandex.praktikum.Task.Task;
 import ru.yandex.praktikum.Task.TaskStatus;
@@ -16,14 +19,17 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Long, EpicTask> epics = new HashMap<>();
     private HashMap<Long, SubTask> subTasks = new HashMap<>();
 
+    @Override
     public HashMap<Long, Task> getTasks() {
         return tasks;
     }
 
+    @Override
     public HashMap<Long, EpicTask> getEpics() {
         return epics;
     }
 
+    @Override
     public HashMap<Long, SubTask> getSubTasks() {
         return subTasks;
     }
@@ -33,6 +39,10 @@ public class InMemoryTaskManager implements TaskManager {
         List<Task> historyList;
         historyList = historyManager.getHistory();
         return historyList;
+    }
+
+    public void removeTaskInHistory(long id){
+        historyManager.remove(id);
     }
 
     @Override
