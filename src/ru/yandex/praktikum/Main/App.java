@@ -215,12 +215,13 @@ public class App {
         inMemoryTaskManager.getSubTask(11);
         inMemoryTaskManager.getSubTask(12);
         inMemoryTaskManager.removeTaskInHistory(9);//удаление эпика из истории
+        inMemoryTaskManager.removeTaskInHistory(3);//удаление таск из истории
 
         List<Task> history = inMemoryTaskManager.getHistoryList();
         if (history.isEmpty()) {
             System.out.println("История просмотров пуста");
         } else {
-            System.out.println("История просмотров задач:");
+            System.out.println("История просмотров задач с удалением эпик с id 9, таск с id 3:");
             for (int i = 0; i < history.size(); i++) {
                 System.out.println((i + 1) + ": " + history.get(i));
             }

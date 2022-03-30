@@ -9,24 +9,17 @@ import java.util.*;
 
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task> historyList = new ArrayList<>();
     private HashMap<Long, Node> mapHistory = new HashMap<>();
-    private LinkedList<Node> linkedHistory = new LinkedList<>();
-    Node firstNode;
-    Node lastNode;
-
+    private LinkedListHistory linkedHistory = new LinkedListHistory();
 
     public void add(Task task) { //добавление задачи в список истории просмотров
         long idTask = task.getId();
         if (mapHistory.containsKey(idTask)) { //проверка на наличие дубликатов
             Node node = mapHistory.get(idTask);
-            removeNode(node); //удаление дубликата
-            linkLast(task);//добавление в конец списка истории просмотра
-        } else if (linkedHistory.size() == 10) {
-            linkedHistory.removeFirst();
-            linkLast(task);
+            linkedHistory.removeNode(node); //удаление дубликата
+            linkedHistory.linkLast(task);//добавление в конец списка истории просмотра
         } else {
-            linkLast(task);
+            linkedHistory.linkLast(task);
         }
     }
 
@@ -40,13 +33,13 @@ public class InMemoryHistoryManager implements HistoryManager {
                 epicTask = (EpicTask) task;
                 for (Long idSubTask : epicTask.getIdSubTasks()) {
                     Node nodeSubTask = mapHistory.get(idSubTask);
-                    removeNode(nodeSubTask);
+                    linkedHistory.removeNode(nodeSubTask);
                     mapHistory.remove(idSubTask);
                 }
-                removeNode(node);
+                linkedHistory.removeNode(node);
                 mapHistory.remove(idTask);
             } else {
-                removeNode(node);
+                linkedHistory.removeNode(node);
                 mapHistory.remove(idTask);
             }
         } else {
@@ -54,72 +47,75 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public void removeNode(Node taskNode) {
-        if (linkedHistory.isEmpty()) {
-            return;
-        }
-        if (linkedHistory.size() == 1) {
-            firstNode = lastNode = null;
-            linkedHistory.removeFirst();
-        } else {
-            if (taskNode.getPrev() == null) {
-                linkedHistory.removeFirst();
-                firstNode = firstNode.getNext();
-                firstNode.setPrev(null);
-            } else if (taskNode.getNext() == null) {
-                linkedHistory.removeLast();
-                lastNode = lastNode.getPrev();
-                lastNode.setNext(null);
-            } else {
-                Node prevTaskNode = taskNode.getPrev();
-                Node nextTaskNode = taskNode.getNext();
-                prevTaskNode.setNext(nextTaskNode);
-                nextTaskNode.setPrev(prevTaskNode);
-                linkedHistory.remove(taskNode);
-            }
-        }
-    }
-
-    public ArrayList<Task> getTasks() {
-        ArrayList<Task> listTask = new ArrayList<>();
-        for (Node node : linkedHistory) {
-            listTask.add(node.getTask());
-        }
-        return listTask;
-    }
-
     @Override
     public List<Task> getHistory() {
-        historyList = getTasks();
-        return historyList;
+        return linkedHistory.getTasks();
     }
 
-    public void linkLast(Task task) {
-        Node node = new Node(null, task, null);
-        if (linkedHistory.size() == 0) {
-            addFirst(task);
-        } else {
-            lastNode.setNext(node);
-            node.setPrev(lastNode);
-            lastNode = node;
-            linkedHistory.add(lastNode);
-            mapHistory.put(task.getId(), lastNode);
-        }
-    }
+    private class LinkedListHistory {
+        private Node firstNode;
+        private Node lastNode;
+        private int size = 0;
 
-    public void addFirst(Task task) {
-        Node node = new Node(null, task, null);
-
-        if (linkedHistory.size() == 0) {
-            firstNode = node;
-            lastNode = node;
-            linkedHistory.add(node);
-        } else {
-            firstNode.setPrev(node);
-            node.setNext(firstNode);
-            firstNode = node;
-            linkedHistory.add(firstNode);
+        public void linkLast(Task task) {
+            Node node = new Node(null, task, null);
+            if (size == 0) {
+                addFirst(task);
+            } else {
+                lastNode.setNext(node);
+                node.setPrev(lastNode);
+                lastNode = node;
+                mapHistory.put(task.getId(), lastNode);
+                size++;
+            }
         }
-        mapHistory.put(task.getId(), node);
+
+        public void addFirst(Task task) {
+            Node node = new Node(null, task, null);
+
+            if (size == 0) {
+                firstNode = node;
+                lastNode = node;
+            } else {
+                firstNode.setPrev(node);
+                node.setNext(firstNode);
+                firstNode = node;
+            }
+            mapHistory.put(task.getId(), node);
+            size++;
+        }
+
+        public void removeNode(Node taskNode) {
+            if (size == 0) {
+                return;
+            }
+            if (size == 1) {
+                firstNode = lastNode = null;
+            } else {
+                if (taskNode.getPrev() == null) {
+                    firstNode = firstNode.getNext();
+                    firstNode.setPrev(null);
+                } else if (taskNode.getNext() == null) {
+                    lastNode = lastNode.getPrev();
+                    lastNode.setNext(null);
+                } else {
+                    Node prevTaskNode = taskNode.getPrev();
+                    Node nextTaskNode = taskNode.getNext();
+                    prevTaskNode.setNext(nextTaskNode);
+                    nextTaskNode.setPrev(prevTaskNode);
+                }
+            }
+            size--;
+        }
+
+        public ArrayList<Task> getTasks() {
+            ArrayList<Task> listTask = new ArrayList<>();
+            Node current = firstNode;
+            while (current != null) {
+                listTask.add(current.getTask());
+                current = current.getNext();
+            }
+            return listTask;
+        }
     }
 }
