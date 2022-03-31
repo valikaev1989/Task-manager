@@ -34,14 +34,9 @@ public class InMemoryHistoryManager implements HistoryManager {
                 for (Long idSubTask : epicTask.getIdSubTasks()) {
                     Node nodeSubTask = mapHistory.get(idSubTask);
                     linkedHistory.removeNode(nodeSubTask);
-                    mapHistory.remove(idSubTask);
                 }
-                linkedHistory.removeNode(node);
-                mapHistory.remove(idTask);
-            } else {
-                linkedHistory.removeNode(node);
-                mapHistory.remove(idTask);
             }
+            linkedHistory.removeNode(node);
         } else {
             System.out.println("Нет такой задачи в истории");
         }
@@ -55,41 +50,23 @@ public class InMemoryHistoryManager implements HistoryManager {
     private class LinkedListHistory {
         private Node firstNode;
         private Node lastNode;
-        private int size = 0;
 
         public void linkLast(Task task) {
-            Node node = new Node(null, task, null);
-            if (size == 0) {
-                addFirst(task);
-            } else {
-                lastNode.setNext(node);
-                node.setPrev(lastNode);
-                lastNode = node;
-                mapHistory.put(task.getId(), lastNode);
-                size++;
-            }
-        }
-
-        public void addFirst(Task task) {
-            Node node = new Node(null, task, null);
-
-            if (size == 0) {
-                firstNode = node;
-                lastNode = node;
-            } else {
-                firstNode.setPrev(node);
-                node.setNext(firstNode);
-                firstNode = node;
-            }
-            mapHistory.put(task.getId(), node);
-            size++;
+            final Node oldLastNode = lastNode;
+            final Node newNode = new Node(oldLastNode, task, null);
+            lastNode = newNode;
+            if (oldLastNode == null)
+                firstNode = newNode;
+            else
+                oldLastNode.setNext(newNode);
+            mapHistory.put(task.getId(), newNode); //обновление мапы
         }
 
         public void removeNode(Node taskNode) {
-            if (size == 0) {
+            if (firstNode==null||lastNode==null) {
                 return;
             }
-            if (size == 1) {
+            if (firstNode.getNext()==null||lastNode.getPrev()==null) {
                 firstNode = lastNode = null;
             } else {
                 if (taskNode.getPrev() == null) {
@@ -105,7 +82,7 @@ public class InMemoryHistoryManager implements HistoryManager {
                     nextTaskNode.setPrev(prevTaskNode);
                 }
             }
-            size--;
+            mapHistory.remove(taskNode.getTask().getId());
         }
 
         public ArrayList<Task> getTasks() {

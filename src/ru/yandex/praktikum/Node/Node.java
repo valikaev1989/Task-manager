@@ -22,10 +22,6 @@ public class Node {
         return task;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
     public Node getNext() {
         return next;
     }
@@ -58,9 +54,7 @@ public class Node {
     @Override
     public String toString() {
         return "Node{" +
-                "task=" + task +
-                ", next=" + next +
-                ", prev=" + prev +
-                '}';
+                "task= '" + task + '}';
+
     }
 }
