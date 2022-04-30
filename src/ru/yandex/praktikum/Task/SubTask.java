@@ -1,9 +1,22 @@
 package ru.yandex.praktikum.Task;
 
+
 import java.util.Objects;
 
-public  class SubTask extends Task {
+import static ru.yandex.praktikum.ReadAndWriteTasks.CSVutil.splitter;
+
+public class SubTask extends Task {
     private long idEpicTask;
+
+    public SubTask(String nameTask, String description, long idEpicTask) {
+        super(nameTask, description);
+        this.idEpicTask = idEpicTask;
+    }
+
+    public SubTask(String nameTask, String description, TaskStatus status, Long id, long idEpicTask) {
+        super(nameTask, description, status, id);
+        this.idEpicTask = idEpicTask;
+    }
 
     public SubTask() {
     }
@@ -30,13 +43,9 @@ public  class SubTask extends Task {
         return Objects.hash(super.hashCode(), idEpicTask);
     }
 
+    //id,type,name,status,description,epic
     @Override
     public String toString() {
-        return "SubTask{" +
-                "nameTask='" + getNameTask() + '\'' +
-                ", status=" + getStatus() +
-                ", idSubTask=" + getId() +
-                ", idEpicTask=" + idEpicTask +
-                '}';
+        return id.toString() + splitter + TypeTasks.SubTask + splitter + nameTask + splitter + status + splitter + description + splitter + idEpicTask;
     }
 }

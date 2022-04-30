@@ -38,7 +38,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             linkedHistory.removeNode(node);
         } else {
-            System.out.println("Нет такой задачи в истории");
+            System.out.println("задача с id:"+idTask+" отсутствует в истории");
         }
     }
 
@@ -55,18 +55,19 @@ public class InMemoryHistoryManager implements HistoryManager {
             final Node oldLastNode = lastNode;
             final Node newNode = new Node(oldLastNode, task, null);
             lastNode = newNode;
-            if (oldLastNode == null)
+            if (oldLastNode == null) {
                 firstNode = newNode;
-            else
+                mapHistory.put(task.getId(), newNode);
+            }else {
                 oldLastNode.setNext(newNode);
-            mapHistory.put(task.getId(), newNode); //обновление мапы
+                mapHistory.put(task.getId(), newNode); //обновление мапы
+            }
         }
 
         public void removeNode(Node taskNode) {
-            if (firstNode==null||lastNode==null) {
+            if (firstNode == null && lastNode == null) {
                 return;
-            }
-            if (firstNode.getNext()==null||lastNode.getPrev()==null) {
+            } else if (firstNode.getNext() == null && lastNode.getPrev() == null) {
                 firstNode = lastNode = null;
             } else {
                 if (taskNode.getPrev() == null) {
@@ -85,8 +86,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             mapHistory.remove(taskNode.getTask().getId());
         }
 
-        public ArrayList<Task> getTasks() {
-            ArrayList<Task> listTask = new ArrayList<>();
+        public List<Task> getTasks() {
+            List<Task> listTask = new ArrayList<>();
             Node current = firstNode;
             while (current != null) {
                 listTask.add(current.getTask());
@@ -94,5 +95,14 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             return listTask;
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Task task : getHistory()){
+            result.append(task.getId()).append(",");
+        }
+        return result.toString();
     }
 }

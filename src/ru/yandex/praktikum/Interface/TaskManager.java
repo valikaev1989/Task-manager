@@ -1,5 +1,6 @@
 package ru.yandex.praktikum.Interface;
 
+import ru.yandex.praktikum.Exception.ManagerSaveException;
 import ru.yandex.praktikum.Task.EpicTask;
 import ru.yandex.praktikum.Task.SubTask;
 import ru.yandex.praktikum.Task.Task;
@@ -11,27 +12,27 @@ import java.util.List;
 public interface TaskManager extends Managers {
     long generateID();
 
-    void createTask(Task task);
+    void createTask(Task task) throws ManagerSaveException;
 
-    void createEpicTask(EpicTask epicTask);
+    void createEpicTask(EpicTask epicTask) throws ManagerSaveException;
 
-    void createSubTask(SubTask subTask);
+    void createSubTask(SubTask subTask) throws ManagerSaveException;
 
-    void clearAllTask();
+    void clearAllTask() throws ManagerSaveException;
 
-    Task getTask(long id);
+    Task getTask(long id) throws ManagerSaveException;
 
-    EpicTask getEpicTask(long id);
+    EpicTask getEpicTask(long id) throws ManagerSaveException;
 
-    SubTask getSubTask(long id);
+    SubTask getSubTask(long id) throws ManagerSaveException;
 
-    void updateTask(Task task);
+    void updateTask(Task task) throws ManagerSaveException;
 
-    void updateSubTask(SubTask subTask);
+    void updateSubTask(SubTask subTask) throws ManagerSaveException;
 
-    void updateEpicTask(EpicTask epicTask);
+    void updateEpicTask(EpicTask epicTask) throws ManagerSaveException;
 
-    void deleteTasksOnId(long id);
+    void deleteTasksOnId(long id) throws ManagerSaveException;
 
     ArrayList<SubTask> getListSubTaskFromEpic(long idEpicTask);
 
@@ -39,10 +40,13 @@ public interface TaskManager extends Managers {
 
     ArrayList<EpicTask> getListEpicTask();
 
-    List<Task> getHistoryList(); // метод возврата списка последних просмотренных заданий
+    List<Task> getHistoryList() throws ManagerSaveException; // метод возврата списка последних просмотренных заданий
 
     public HashMap<Long, Task> getTasks();
+
     public HashMap<Long, EpicTask> getEpics();
+
     public HashMap<Long, SubTask> getSubTasks();
 
+    ArrayList<Task> getAllTasks() throws ManagerSaveException;
 }

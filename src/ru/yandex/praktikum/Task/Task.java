@@ -1,12 +1,28 @@
 package ru.yandex.praktikum.Task;
 
+
 import java.util.Objects;
 
+import static ru.yandex.praktikum.ReadAndWriteTasks.CSVutil.splitter;
+
 public class Task {
-    private String nameTask;
-    private String description;
-    private TaskStatus status;
-    private Long id;
+     String nameTask;
+     String description;
+     TaskStatus status;
+     Long id;
+
+    public Task(String nameTask, String description) {
+        this.nameTask = nameTask;
+        this.description = description;
+        status = TaskStatus.NEW;
+    }
+
+    public Task(String nameTask, String description, TaskStatus status, Long id) {
+        this.nameTask = nameTask;
+        this.description = description;
+        this.status = status;
+        this.id = id;
+    }
 
     public Task() {
         status = TaskStatus.NEW;
@@ -26,6 +42,10 @@ public class Task {
 
     public String getNameTask() {
         return nameTask;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
@@ -55,13 +75,18 @@ public class Task {
         return Objects.hash(nameTask, description, status, id);
     }
 
+//    @Override
+//    public String toString() {
+//        return "Task{" +
+//                "nameTask='" + nameTask + '\'' +
+//                ", description='" + description + '\'' +
+//                ", status=" + status +
+//                ", id=" + id +
+//                '}';
+//    }
+
     @Override
     public String toString() {
-        return "Task{" +
-                "nameTask='" + nameTask + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", idTask=" + id +
-                '}';
+        return id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter + status + splitter + description;
     }
 }

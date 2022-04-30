@@ -1,11 +1,24 @@
 package ru.yandex.praktikum.Task;
 
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class EpicTask extends Task {
+import static ru.yandex.praktikum.ReadAndWriteTasks.CSVutil.splitter;
 
+public class EpicTask extends Task {
     ArrayList<Long> idSubTasks = new ArrayList<>();
+
+    public EpicTask(String nameTask, String description, TaskStatus status, Long id) {
+        super(nameTask, description, status, id);
+    }
+
+    public EpicTask(String nameTask, String description) {
+        super(nameTask, description);
+    }
+
+    public EpicTask() {
+    }
 
     public ArrayList<Long> getIdSubTasks() {
         return idSubTasks;
@@ -31,11 +44,6 @@ public class EpicTask extends Task {
 
     @Override
     public String toString() {
-        return "EpicTask{" +
-                "nameTask='" + getNameTask() + '\''
-                + ", status=" + getStatus() +
-                ", idEpicTask=" + getId() +
-                ", idSubTasks=" + idSubTasks +
-                '}';
+        return id.toString() + splitter + TypeTasks.EpicTask + splitter + nameTask + splitter + status + splitter + description;
     }
 }
