@@ -1,6 +1,6 @@
 package ru.yandex.praktikum.Main;
 
-import ru.yandex.praktikum.Exception.ManagerSaveException;
+import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.Task.*;
 import ru.yandex.praktikum.TaskManager.FileBackedTasksManager;
 
@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 
 public class App {
-    File file = new File("src\\ru\\yandex\\praktikum\\ReadAndWriteTasks\\SavedTasks.csv");
+    private File file = new File("src\\ru\\yandex\\praktikum\\ReadAndWriteTasks\\SavedTasks.csv");
     FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
     Scanner scanner = new Scanner(System.in);
 
@@ -46,16 +46,16 @@ public class App {
         EpicTask epicTask2 = new EpicTask("epictask2", "description");
         fileBackedTasksManager.createEpicTask(epicTask2);
         fileBackedTasksManager.getEpicTask(getIdTask(epicTask2));
-        SubTask subTask1 = new SubTask("Subtask1", "description",epicTask1.getId() );
+        SubTask subTask1 = new SubTask("Subtask1", "description", epicTask1.getId());
         fileBackedTasksManager.createSubTask(subTask1);
         fileBackedTasksManager.getSubTask(getIdTask(subTask1));
-        SubTask subTask2 = new SubTask("Subtask2", "description",epicTask1.getId() );
+        SubTask subTask2 = new SubTask("Subtask2", "description", epicTask1.getId());
         fileBackedTasksManager.createSubTask(subTask2);
         fileBackedTasksManager.getSubTask(getIdTask(subTask2));
-        SubTask subTask3 = new SubTask("Subtask3", "description",epicTask2.getId() );
+        SubTask subTask3 = new SubTask("Subtask3", "description", epicTask2.getId());
         fileBackedTasksManager.createSubTask(subTask3);
         fileBackedTasksManager.getSubTask(getIdTask(subTask3));
-        SubTask subTask4 = new SubTask("Subtask4", "description",epicTask2.getId() );
+        SubTask subTask4 = new SubTask("Subtask4", "description", epicTask2.getId());
         fileBackedTasksManager.createSubTask(subTask4);
         fileBackedTasksManager.getSubTask(getIdTask(subTask4));
         fileBackedTasksManager.getTask(1);
@@ -67,13 +67,13 @@ public class App {
 
     public long getIdTask(Task task) throws ManagerSaveException {//получение id задачи
         long idTask = 0;
-        for (Task task1 : fileBackedTasksManager.getAllTasks()){
-            if(task.equals(task1)){
-                task=task1;
-                idTask=task.getId();
+        for (Task task1 : fileBackedTasksManager.getAllTasks()) {
+            if (task.equals(task1)) {
+                task = task1;
+                idTask = task.getId();
             }
         }
-            return idTask;
+        return idTask;
     }
 
     public void check() throws ManagerSaveException {
@@ -149,8 +149,6 @@ public class App {
         // печатаем задачи:
         printAllTask();
         System.out.println(" ");
-//        getTaskFirst(); // печать истории просмотра, строка 203
-        System.out.println(" ");
 
         fileBackedTasksManager.deleteTasksOnId(subTask2.getId());
         System.out.println(System.lineSeparator() + "удаляем подзадачу: 'Найти объявление о продаже слона' со статусом 'DONE' в эпике 'Купить слона'");
@@ -172,7 +170,7 @@ public class App {
             }
         }
         System.out.println(" " + "\n");
-        getTaskSecond();// печать истории с учетом удаления двух подзадач выше и удалением в самом методе эпика 5,задачи 3
+        getTask();// печать истории с учетом удаления двух подзадач выше и удалением в самом методе эпика 5,задачи 3
         System.out.println(" " + "\n");
         printAllTask();//печать оставшихся задач из хранилищ с задачами
     }
@@ -192,31 +190,8 @@ public class App {
         }
     }
 
-    public void getTaskFirst() throws ManagerSaveException { //метод проверки дублирования истории просмотра
-        fileBackedTasksManager.getTask(1);
-        fileBackedTasksManager.getTask(2);
-        fileBackedTasksManager.getTask(3);
-        fileBackedTasksManager.getTask(4);
-        fileBackedTasksManager.getEpicTask(5);
-        fileBackedTasksManager.getSubTask(12);
-        fileBackedTasksManager.getEpicTask(9);
-        fileBackedTasksManager.getSubTask(10);
-        fileBackedTasksManager.getTask(3);
-        fileBackedTasksManager.getSubTask(10);
-        fileBackedTasksManager.getSubTask(11);
-        fileBackedTasksManager.getEpicTask(5);
-        fileBackedTasksManager.getSubTask(12);
-        fileBackedTasksManager.getTask(1);
-        fileBackedTasksManager.getTask(2);
-        fileBackedTasksManager.getSubTask(6);
-        fileBackedTasksManager.getSubTask(11);
-        fileBackedTasksManager.getEpicTask(9);
-        fileBackedTasksManager.getSubTask(7);
-        fileBackedTasksManager.getTask(4);
-        printHistory();
-    }
-
-    public void getTaskSecond() throws ManagerSaveException { //метод проверки удаления истории просмотра
+    public void getTask() throws ManagerSaveException { //метод проверки удаления из истории просмотра дублей
+        //и принудительного удаления задач из истории
         fileBackedTasksManager.getTask(1);
         fileBackedTasksManager.getTask(2);
         fileBackedTasksManager.getTask(3);

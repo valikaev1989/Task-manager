@@ -1,6 +1,6 @@
 package ru.yandex.praktikum.TaskManager;
 
-import ru.yandex.praktikum.Exception.ManagerSaveException;
+import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.Interface.HistoryManager;
 import ru.yandex.praktikum.Interface.TaskManager;
 import ru.yandex.praktikum.Task.*;
@@ -42,7 +42,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     public void readFile() throws ManagerSaveException {//заполнение менеджера задач и истории просмотра из файла
-        long indetifierNumber = 0;
+        long identifierNumber = 0;
         try (BufferedReader fileReader = new BufferedReader(new FileReader(fileName, StandardCharsets.UTF_8))) {
 
             while (fileReader.ready()) {
@@ -71,9 +71,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 } else {//заполнение истории просмотра задач
                     List<Long> listId = fromStringList(q);
                     for (long id : listId) {
-                        if (indetifierNumber < id) {
-                            indetifierNumber = id;
-                            setIndetifierNumber(indetifierNumber);//установка максимального значения id из файла
+                        if (identifierNumber < id) {
+                            identifierNumber = id;
+                            setIndetifierNumber(identifierNumber);//установка максимального значения id из файла
                             // для не дублирования id у задач при создании новых задач
                         }
                     }
@@ -94,8 +94,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    public Task fromString(String value) { //преобразование строки в задачу
-        // String value = id;type;name;status;description;epic
+    private Task fromString(String value) { //преобразование строки в задачу
+        // параметр в методе записан в формате: idTask;TypeTasks;nameTask;Taskstatus;descriptionTask;epicId
         Task task;
         String[] split = value.split(";");
         TypeTasks typeTasks = TypeTasks.valueOf(split[1]);
@@ -115,7 +115,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return str.contains(substr);
     }
 
-    public static List<Long> fromStringList(String value) {//создание списка с id задач для истории просмотра задач из строки
+    private static List<Long> fromStringList(String value) {//создание списка с id задач для истории просмотра задач из строки
         List<Long> idList = new ArrayList<>();
         String[] split = value.split(",");
         for (String stringID : split) {
@@ -125,7 +125,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return idList;
     }
 
-    public static String toString(HistoryManager manager) {//получение строки с id задач в истории просмотра
+    private static String toString(HistoryManager manager) {//получение строки с id задач в истории просмотра
         return manager.toString();
     }
 

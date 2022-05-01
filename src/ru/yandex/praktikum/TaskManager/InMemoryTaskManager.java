@@ -1,6 +1,6 @@
 package ru.yandex.praktikum.TaskManager;
 
-import ru.yandex.praktikum.Exception.ManagerSaveException;
+import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.Interface.HistoryManager;
 import ru.yandex.praktikum.Interface.Managers;
 import ru.yandex.praktikum.Interface.TaskManager;
@@ -14,7 +14,7 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();// получение экземпляра InMemoryHistoryManager
-    private long indetifierNumber = 0;
+    private long identifierNumber = 0;
     private final HashMap<Long, Task> tasks = new HashMap<>();
     private final HashMap<Long, EpicTask> epics = new HashMap<>();
     private final HashMap<Long, SubTask> subTasks = new HashMap<>();
@@ -49,18 +49,18 @@ public class InMemoryTaskManager implements TaskManager {
         deleteTasksOnId(id);
     }
 
-    public void setIndetifierNumber(long indetifierNumber) {
-        this.indetifierNumber = indetifierNumber;
+    public void setIndetifierNumber(long identifierNumber) {
+        this.identifierNumber = identifierNumber;
     }
 
     public long getIndetifierNumber() {
-        return indetifierNumber;
+        return identifierNumber;
     }
 
     @Override
     public long generateID() {
-        indetifierNumber++;
-        return indetifierNumber;
+        identifierNumber++;
+        return identifierNumber;
     }
 
     @Override
@@ -209,7 +209,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Task> getAllTasks() throws ManagerSaveException {
         ArrayList<Task> allTasks = new ArrayList<>();
-        ArrayList<SubTask> subTasksList = new ArrayList<>();
         allTasks.addAll(tasks.values());
         allTasks.addAll(epics.values());
         allTasks.addAll(subTasks.values());
