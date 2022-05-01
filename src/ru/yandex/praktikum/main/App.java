@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class App {
     private File file = new File("src\\ru\\yandex\\praktikum\\ReadAndWriteTasks\\SavedTasks.csv");
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+    private FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
     Scanner scanner = new Scanner(System.in);
 
     public void start() throws ManagerSaveException {
