@@ -1,9 +1,9 @@
-package ru.yandex.praktikum.Interface;
+package ru.yandex.praktikum.all_Interface;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.Task.EpicTask;
-import ru.yandex.praktikum.Task.SubTask;
-import ru.yandex.praktikum.Task.Task;
+import ru.yandex.praktikum.task.EpicTask;
+import ru.yandex.praktikum.task.SubTask;
+import ru.yandex.praktikum.task.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;

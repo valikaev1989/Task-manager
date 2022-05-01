@@ -1,9 +1,9 @@
-package ru.yandex.praktikum.HistoryManager;
+package ru.yandex.praktikum.historyManager;
 
-import ru.yandex.praktikum.Interface.HistoryManager;
-import ru.yandex.praktikum.Task.EpicTask;
-import ru.yandex.praktikum.Task.Task;
-import ru.yandex.praktikum.Node.Node;
+import ru.yandex.praktikum.all_Interface.HistoryManager;
+import ru.yandex.praktikum.task.EpicTask;
+import ru.yandex.praktikum.task.Task;
+import ru.yandex.praktikum.node.Node;
 
 import java.util.*;
 
@@ -38,7 +38,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             linkedHistory.removeNode(node);
         } else {
-            System.out.println("задача с id:"+idTask+" отсутствует в истории");
+            System.out.println("задача с id:" + idTask + " отсутствует в истории");
         }
     }
 
@@ -58,7 +58,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             if (oldLastNode == null) {
                 firstNode = newNode;
                 mapHistory.put(task.getId(), newNode);
-            }else {
+            } else {
                 oldLastNode.setNext(newNode);
                 mapHistory.put(task.getId(), newNode); //обновление мапы
             }
@@ -100,8 +100,13 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (Task task : getHistory()){
-            result.append(task.getId()).append(",");
+        for (Task task : getHistory()) {
+            if (result.length() == 0) {
+                result.append(task.getId());
+            }else{
+                result.append(",");
+                result.append(task.getId());
+            }
         }
         return result.toString();
     }

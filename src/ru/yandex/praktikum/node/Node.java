@@ -1,6 +1,6 @@
-package ru.yandex.praktikum.Node;
+package ru.yandex.praktikum.node;
 
-import ru.yandex.praktikum.Task.Task;
+import ru.yandex.praktikum.task.Task;
 
 import java.util.Objects;
 

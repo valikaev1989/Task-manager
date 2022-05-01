@@ -1,9 +1,9 @@
-package ru.yandex.praktikum.Task;
+package ru.yandex.praktikum.task;
 
 
 import java.util.Objects;
 
-import static ru.yandex.praktikum.ReadAndWriteTasks.CSVutil.splitter;
+import static ru.yandex.praktikum.readAndWriteTasks.CSVutil.splitter;
 
 public class SubTask extends Task {
     private long idEpicTask;

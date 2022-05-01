@@ -1,8 +1,8 @@
-package ru.yandex.praktikum.Main;
+package ru.yandex.praktikum.main;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.Task.*;
-import ru.yandex.praktikum.TaskManager.FileBackedTasksManager;
+import ru.yandex.praktikum.task.*;
+import ru.yandex.praktikum.taskManager.FileBackedTasksManager;
 
 import java.io.*;
 import java.util.List;

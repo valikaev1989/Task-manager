@@ -1,6 +1,6 @@
-package ru.yandex.praktikum.Interface;
+package ru.yandex.praktikum.all_Interface;
 
-import ru.yandex.praktikum.Task.Task;
+import ru.yandex.praktikum.task.Task;
 
 import java.util.List;
 

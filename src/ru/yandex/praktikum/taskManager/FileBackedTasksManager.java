@@ -1,9 +1,9 @@
-package ru.yandex.praktikum.TaskManager;
+package ru.yandex.praktikum.taskManager;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.Interface.HistoryManager;
-import ru.yandex.praktikum.Interface.TaskManager;
-import ru.yandex.praktikum.Task.*;
+import ru.yandex.praktikum.all_Interface.HistoryManager;
+import ru.yandex.praktikum.all_Interface.TaskManager;
+import ru.yandex.praktikum.task.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static ru.yandex.praktikum.ReadAndWriteTasks.CSVutil.splitter;
+import static ru.yandex.praktikum.readAndWriteTasks.CSVutil.splitter;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
     private final File fileName;// путь к файлу сохранения задач

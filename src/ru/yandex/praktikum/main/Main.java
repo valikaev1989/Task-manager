@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.Main;
+package ru.yandex.praktikum.main;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
 

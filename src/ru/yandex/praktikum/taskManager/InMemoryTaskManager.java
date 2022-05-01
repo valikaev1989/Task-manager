@@ -1,13 +1,13 @@
-package ru.yandex.praktikum.TaskManager;
+package ru.yandex.praktikum.taskManager;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.Interface.HistoryManager;
-import ru.yandex.praktikum.Interface.Managers;
-import ru.yandex.praktikum.Interface.TaskManager;
-import ru.yandex.praktikum.Task.EpicTask;
-import ru.yandex.praktikum.Task.Task;
-import ru.yandex.praktikum.Task.TaskStatus;
-import ru.yandex.praktikum.Task.SubTask;
+import ru.yandex.praktikum.all_Interface.HistoryManager;
+import ru.yandex.praktikum.all_Interface.Managers;
+import ru.yandex.praktikum.all_Interface.TaskManager;
+import ru.yandex.praktikum.task.EpicTask;
+import ru.yandex.praktikum.task.Task;
+import ru.yandex.praktikum.task.TaskStatus;
+import ru.yandex.praktikum.task.SubTask;
 
 import java.util.*;
 

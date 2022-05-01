@@ -1,10 +1,10 @@
-package ru.yandex.praktikum.Task;
+package ru.yandex.praktikum.task;
 
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static ru.yandex.praktikum.ReadAndWriteTasks.CSVutil.splitter;
+import static ru.yandex.praktikum.readAndWriteTasks.CSVutil.splitter;
 
 public class EpicTask extends Task {
     ArrayList<Long> idSubTasks = new ArrayList<>();
