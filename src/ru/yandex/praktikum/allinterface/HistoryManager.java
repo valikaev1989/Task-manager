@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.all_Interface;
+package ru.yandex.praktikum.allinterface;
 
 import ru.yandex.praktikum.task.Task;
 

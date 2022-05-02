@@ -2,7 +2,7 @@ package ru.yandex.praktikum.main;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.task.*;
-import ru.yandex.praktikum.taskManager.FileBackedTasksManager;
+import ru.yandex.praktikum.taskmanager.FileBackedTasksManager;
 
 import java.io.*;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 
 public class App {
-    private File file = new File("src\\ru\\yandex\\praktikum\\ReadAndWriteTasks\\SavedTasks.csv");
+    private File file = new File("src\\ru\\yandex\\praktikum\\utils\\SavedTasks.csv");
     private FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     public void start() throws ManagerSaveException {
         System.out.println("1 - первый запуск и запись в файл всех задач из метода cycleCheckTechTask()");

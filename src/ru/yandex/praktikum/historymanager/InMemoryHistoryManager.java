@@ -1,6 +1,6 @@
-package ru.yandex.praktikum.historyManager;
+package ru.yandex.praktikum.historymanager;
 
-import ru.yandex.praktikum.all_Interface.HistoryManager;
+import ru.yandex.praktikum.allinterface.HistoryManager;
 import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.Task;
 import ru.yandex.praktikum.node.Node;

@@ -1,7 +1,7 @@
-package ru.yandex.praktikum.all_Interface;
+package ru.yandex.praktikum.allinterface;
 
-import ru.yandex.praktikum.historyManager.InMemoryHistoryManager;
-import ru.yandex.praktikum.taskManager.InMemoryTaskManager;
+import ru.yandex.praktikum.historymanager.InMemoryHistoryManager;
+import ru.yandex.praktikum.taskmanager.InMemoryTaskManager;
 
 public interface Managers {
     static HistoryManager getDefaultHistory() {

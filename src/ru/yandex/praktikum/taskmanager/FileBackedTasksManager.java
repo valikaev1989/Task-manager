@@ -1,8 +1,8 @@
-package ru.yandex.praktikum.taskManager;
+package ru.yandex.praktikum.taskmanager;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.all_Interface.HistoryManager;
-import ru.yandex.praktikum.all_Interface.TaskManager;
+import ru.yandex.praktikum.allinterface.HistoryManager;
+import ru.yandex.praktikum.allinterface.TaskManager;
 import ru.yandex.praktikum.task.*;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static ru.yandex.praktikum.readAndWriteTasks.CSVutil.splitter;
+import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
     private final File fileName;// путь к файлу сохранения задач
@@ -50,7 +50,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 String firstLine = "id;type;name;status;description;epic";
                 String w = "Task";
                 if (q.isBlank() || firstLine.equals(q)) {//пропуск при чтении первой и пустых строк
-                } else if (contains(q, w)) {//заполнение коллекций менеджера задачами из файла
+                } else if (q.contains(w)) {//заполнение коллекций менеджера задачами из файла
                     Task taskFromFile = fromString(q);
                     Task task = new Task();
                     SubTask subTask = new SubTask();
@@ -109,10 +109,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             task = new SubTask(split[2], split[4], TaskStatus.valueOf(split[3]), id, epicId);
         }
         return task;
-    }
-
-    public boolean contains(String str, String substr) {//проверка наличия задачи в строке в файле сохранения
-        return str.contains(substr);
     }
 
     private static List<Long> fromStringList(String value) {//создание списка с id задач для истории просмотра задач из строки

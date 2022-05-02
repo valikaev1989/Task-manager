@@ -1,9 +1,9 @@
-package ru.yandex.praktikum.taskManager;
+package ru.yandex.praktikum.taskmanager;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
-import ru.yandex.praktikum.all_Interface.HistoryManager;
-import ru.yandex.praktikum.all_Interface.Managers;
-import ru.yandex.praktikum.all_Interface.TaskManager;
+import ru.yandex.praktikum.allinterface.HistoryManager;
+import ru.yandex.praktikum.allinterface.Managers;
+import ru.yandex.praktikum.allinterface.TaskManager;
 import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.Task;
 import ru.yandex.praktikum.task.TaskStatus;
