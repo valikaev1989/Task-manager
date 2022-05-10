@@ -1,19 +1,35 @@
 package ru.yandex.praktikum.task;
 
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
 public class SubTask extends Task {
-    private long idEpicTask;
+    private Long idEpicTask;
 
-    public SubTask(String nameTask, String description, long idEpicTask) {
+    public SubTask(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime, Long idEpicTask) {
+        super(nameTask, description, status, id, duration, startTime);
+        this.idEpicTask = idEpicTask;
+    }
+
+    public SubTask(String nameTask, String description, int duration, LocalDateTime startTime, Long idEpicTask) {
+        super(nameTask, description, duration, startTime);
+        this.idEpicTask = idEpicTask;
+    }
+
+    public SubTask(String nameTask, String description, Long idEpicTask) {
         super(nameTask, description);
         this.idEpicTask = idEpicTask;
     }
 
-    public SubTask(String nameTask, String description, TaskStatus status, Long id, long idEpicTask) {
+    public SubTask(String nameTask, String description, TaskStatus status, Long idEpicTask) {
+        super(nameTask, description, status);
+        this.idEpicTask = idEpicTask;
+    }
+
+    public SubTask(String nameTask, String description, TaskStatus status, Long id, Long idEpicTask) {
         super(nameTask, description, status, id);
         this.idEpicTask = idEpicTask;
     }
@@ -22,11 +38,25 @@ public class SubTask extends Task {
     }
 
     public long getIdEpicTask() {
-        return idEpicTask;
+        if(idEpicTask!=null){
+            return idEpicTask;
+        }else{
+            throw new NullPointerException("idEpicTask = null");
+        }
+
     }
 
-    public void setIdEpicTask(long idEpicTask) {
-        this.idEpicTask = idEpicTask;
+    public void setIdEpicTask(Long idEpicTask) {
+        if(idEpicTask!=null){
+            if (idEpicTask > 0) {
+                this.idEpicTask = idEpicTask;
+            }else{
+                throw new IllegalArgumentException("idEpicTask имеет отрицательное значение");
+            }
+        }else{
+            throw new NullPointerException("переданный idEpicTask = null");
+        }
+
     }
 
     @Override
@@ -35,7 +65,7 @@ public class SubTask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SubTask subTask = (SubTask) o;
-        return idEpicTask == subTask.idEpicTask;
+        return idEpicTask.equals(subTask.idEpicTask);
     }
 
     @Override
@@ -46,6 +76,21 @@ public class SubTask extends Task {
     //id,type,name,status,description,epic
     @Override
     public String toString() {
-        return id.toString() + splitter + TypeTasks.SubTask + splitter + nameTask + splitter + status + splitter + description + splitter + idEpicTask;
+        String result;
+        try {
+            String q = String.valueOf(getStartTime());
+            String w = String.valueOf(getEndTime());
+            result = getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
+                    splitter + getStatus() + splitter + getDescription() + splitter +
+                    q + splitter + getDuration() + splitter + w + splitter + idEpicTask;
+        }catch (NullPointerException ex){
+            String q = String.valueOf(getStartTime());
+            String w = "null";
+            result = getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
+                    splitter + getStatus() + splitter + getDescription() + splitter +
+                    q + splitter + getDuration() + splitter + w + splitter + idEpicTask;
+        }
+
+        return result;
     }
 }

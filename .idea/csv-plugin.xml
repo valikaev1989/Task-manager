@@ -3,14 +3,14 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\src\ru\yandex\praktikum\ReadAndWriteTasks\SavedTasks.csv">
+        <entry key="\SavedTasks.csv">
           <value>
             <Attribute>
-              <option name="separator" value="," />
+              <option name="separator" value=";" />
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\ru\yandex\praktikum\readAndWriteTasks\SavedTasks.csv">
+        <entry key="\TestSaveTasks.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />

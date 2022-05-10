@@ -5,6 +5,7 @@ import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.SubTask;
 import ru.yandex.praktikum.task.Task;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,11 @@ public interface TaskManager extends Managers {
 
     void clearAllTask() throws ManagerSaveException;
 
-    Task getTask(long id) throws ManagerSaveException;
+    Task getTask(Long id) throws ManagerSaveException;
 
-    EpicTask getEpicTask(long id) throws ManagerSaveException;
+    EpicTask getEpicTask(Long id) throws ManagerSaveException;
 
-    SubTask getSubTask(long id) throws ManagerSaveException;
+    SubTask getSubTask(Long id) throws ManagerSaveException;
 
     void updateTask(Task task) throws ManagerSaveException;
 
@@ -32,9 +33,15 @@ public interface TaskManager extends Managers {
 
     void updateEpicTask(EpicTask epicTask) throws ManagerSaveException;
 
-    void deleteTasksOnId(long id) throws ManagerSaveException;
+    void deleteTasksOnId(Long id) throws ManagerSaveException;
 
-    ArrayList<SubTask> getListSubTaskFromEpic(long idEpicTask);
+    void deleteTask(Long id) throws ManagerSaveException;
+
+    void deleteEpicTask(Long id) throws ManagerSaveException;
+
+    void deleteSubTask(Long id) throws ManagerSaveException;
+
+    ArrayList<SubTask> getListSubTaskFromEpic(Long idEpicTask);
 
     ArrayList<Task> getListTask();
 
@@ -49,4 +56,6 @@ public interface TaskManager extends Managers {
     public HashMap<Long, SubTask> getSubTasks();
 
     ArrayList<Task> getAllTasks() throws ManagerSaveException;
+
+    LocalDateTime createStartTimeTask();
 }

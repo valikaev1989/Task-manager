@@ -24,7 +24,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public void remove(long idTask) { // удаление из истории просмотров
+    public void remove(Long idTask) { // удаление из истории просмотров
         if (mapHistory.containsKey(idTask)) {
             Node node = mapHistory.get(idTask);
             Task task = node.getTask();

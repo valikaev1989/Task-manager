@@ -1,13 +1,21 @@
 package ru.yandex.praktikum.task;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.TreeSet;
 
 import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
 public class EpicTask extends Task {
+    LocalDateTime epicEndTime;
     ArrayList<Long> idSubTasks = new ArrayList<>();
+
+    public EpicTask(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime, LocalDateTime epicEndTime) {
+        super(nameTask, description, status, id, duration, startTime);
+        this.epicEndTime = epicEndTime;
+    }
 
     public EpicTask(String nameTask, String description, TaskStatus status, Long id) {
         super(nameTask, description, status, id);
@@ -24,7 +32,16 @@ public class EpicTask extends Task {
         return idSubTasks;
     }
 
-    public void setIdSubTasks(long idSubTasks) {
+    @Override
+    public LocalDateTime getEndTime() {
+        return epicEndTime;
+    }
+
+    public void setEpicEndTime(LocalDateTime epicEndTime) {
+        this.epicEndTime = epicEndTime;
+    }
+
+    public void setIdSubTasks(Long idSubTasks) {
         this.idSubTasks.add(idSubTasks);
     }
 
@@ -37,6 +54,7 @@ public class EpicTask extends Task {
         return Objects.equals(idSubTasks, epicTask.idSubTasks);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), idSubTasks);
@@ -44,6 +62,22 @@ public class EpicTask extends Task {
 
     @Override
     public String toString() {
-        return id.toString() + splitter + TypeTasks.EpicTask + splitter + nameTask + splitter + status + splitter + description;
+        String result;
+        try {
+            String q = String.valueOf(getStartTime());
+            String w = String.valueOf(getEndTime());
+            result = getId().toString() + splitter + TypeTasks.EpicTask + splitter + getNameTask() +
+                    splitter + getStatus() + splitter + getDescription() + splitter +
+                    q + splitter + getDuration() + splitter + w;
+        } catch (NullPointerException ex) {
+            String q = String.valueOf(getStartTime());
+            String w = "null";
+            result = getId().toString() + splitter + TypeTasks.EpicTask + splitter + getNameTask() +
+                    splitter + getStatus() + splitter + getDescription() + splitter +
+                    q + splitter + getDuration() + splitter + w;
+        }
+
+        return result;
+
     }
 }

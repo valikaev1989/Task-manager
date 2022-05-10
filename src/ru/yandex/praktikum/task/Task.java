@@ -1,20 +1,47 @@
 package ru.yandex.praktikum.task;
 
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
-public class Task {
-     String nameTask;
-     String description;
-     TaskStatus status;
-     Long id;
+public class Task implements Comparable<Task> {
+    private String nameTask;
+    private String description;
+    private TaskStatus status;
+    private Long id;
+    private int duration;
+    private LocalDateTime startTime;
+
+    public Task(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime) {
+        this.nameTask = nameTask;
+        this.description = description;
+        this.status = status;
+        this.id = id;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String nameTask, String description, int duration, LocalDateTime startTime) {
+        this.nameTask = nameTask;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
+        status = TaskStatus.NEW;
+    }
 
     public Task(String nameTask, String description) {
         this.nameTask = nameTask;
         this.description = description;
         status = TaskStatus.NEW;
+    }
+
+    public Task(String nameTask, String description, TaskStatus status) {
+        this.nameTask = nameTask;
+        this.description = description;
+        this.status = status;
     }
 
     public Task(String nameTask, String description, TaskStatus status, Long id) {
@@ -28,7 +55,7 @@ public class Task {
         status = TaskStatus.NEW;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -60,12 +87,33 @@ public class Task {
         return status;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plusMinutes(duration);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(nameTask, task.nameTask)
+        return id.equals(task.id) && Objects.equals(nameTask, task.nameTask)
                 && Objects.equals(description, task.description)
                 && status == task.status;
     }
@@ -75,18 +123,31 @@ public class Task {
         return Objects.hash(nameTask, description, status, id);
     }
 
-//    @Override
-//    public String toString() {
-//        return "Task{" +
-//                "nameTask='" + nameTask + '\'' +
-//                ", description='" + description + '\'' +
-//                ", status=" + status +
-//                ", id=" + id +
-//                '}';
-//    }
-
     @Override
     public String toString() {
-        return id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter + status + splitter + description;
+        String result;
+        try {
+            String q = String.valueOf(startTime);
+            String w = String.valueOf(getEndTime());
+            result = id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
+                    + status + splitter + description + splitter + q + splitter + duration + splitter + w;
+        } catch (NullPointerException ex) {
+            String q = String.valueOf(startTime);
+            String w = "null";
+            result = id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
+                    + status + splitter + description + splitter + q + splitter + duration + splitter + w;
+        }
+        return result;
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        if (this.startTime == null) {
+            return 1;
+        }
+        if (o.startTime == null) {
+            return -1;
+        }
+        return (this.startTime.compareTo(o.startTime));
     }
 }
