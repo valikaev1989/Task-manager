@@ -7,7 +7,6 @@ import ru.yandex.praktikum.taskmanager.FileBackedTasksManager;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -38,7 +37,7 @@ public class App {
             printAllTask();
             System.out.println(" ");
             printHistory();
-            System.out.println("");
+            System.out.println();
             System.out.println("приоритет задач");
             for (Task task:fileBackedTasksManager.getPrioritizedTasks()){
                 System.out.println(task);
@@ -48,7 +47,7 @@ public class App {
             printAllTask();
             System.out.println(" ");
             printHistory();
-            System.out.println("");
+            System.out.println();
             System.out.println("приоритет задач");
             for (Task task:fileBackedTasksManager.getPrioritizedTasks()){
                 System.out.println(task);
@@ -113,10 +112,10 @@ public void checkDateTimeTask() throws ManagerSaveException {
         Task task2 = new Task("Task2", "description");
         fileBackedTasksManager.createTask(task2);
         fileBackedTasksManager.getTask(getIdTask(task2));
-        EpicTask epicTask1 = new EpicTask("epictask1", "description");
+        EpicTask epicTask1 = new EpicTask("epicTask1", "description");
         fileBackedTasksManager.createEpicTask(epicTask1);
         fileBackedTasksManager.getEpicTask(getIdTask(epicTask1));
-        EpicTask epicTask2 = new EpicTask("epictask2", "description");
+        EpicTask epicTask2 = new EpicTask("epicTask2", "description");
         fileBackedTasksManager.createEpicTask(epicTask2);
         fileBackedTasksManager.getEpicTask(getIdTask(epicTask2));
         SubTask subTask1 = new SubTask("Subtask1", "description", epicTask1.getId());
@@ -280,7 +279,7 @@ public void checkDateTimeTask() throws ManagerSaveException {
         fileBackedTasksManager.getSubTask(11L);
         fileBackedTasksManager.getSubTask(12L);
         fileBackedTasksManager.deleteTasksOnId(9L);//удаление эпика из истории
-        fileBackedTasksManager.deleteTasksOnId(3L);//удаление таск из истории
+        fileBackedTasksManager.deleteTasksOnId(3L);//удаление таска из истории
         printHistory();
     }
 

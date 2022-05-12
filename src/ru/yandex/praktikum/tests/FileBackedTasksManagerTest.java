@@ -1,8 +1,6 @@
 package ru.yandex.praktikum.tests;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.yandex.praktikum.allinterface.TaskManager;
 import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.SubTask;
@@ -37,7 +35,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
     }
 
     @Test
-    void checkSaveEmptyFileName() throws ManagerSaveException {
+    void checkSaveEmptyFileName()  {
         final Task task10 = new Task("Test Task1", "Test description1");
         FileBackedTasksManager fileBackedTasksManager1 = new FileBackedTasksManager(new File(""));
         ManagerSaveException ex = assertThrows(ManagerSaveException.class, () -> fileBackedTasksManager1.createTask(task10));
@@ -45,7 +43,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
     }
 
     @Test
-    void checkAddinFile() throws ManagerSaveException {
+    void checkAddInFile() throws ManagerSaveException {
         assertTrue(fileBackedTasksManager.getHistoryList().isEmpty(), "Список не пустой");
         assertTrue(fileBackedTasksManager.getAllTasks().isEmpty(), "Список не пустой");
         fileBackedTasksManager.createTask(task1);

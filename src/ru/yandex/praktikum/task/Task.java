@@ -62,9 +62,6 @@ public class Task implements Comparable<Task> {
         this.id = id;
     }
 
-    public void setNameTask(String nameTask) {
-        this.nameTask = nameTask;
-    }
 
     public String getNameTask() {
         return nameTask;
@@ -72,10 +69,6 @@ public class Task implements Comparable<Task> {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public void setStatus(TaskStatus status) {

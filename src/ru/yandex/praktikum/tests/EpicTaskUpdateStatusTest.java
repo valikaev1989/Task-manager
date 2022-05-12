@@ -1,6 +1,5 @@
 package ru.yandex.praktikum.tests;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.exception.ManagerSaveException;

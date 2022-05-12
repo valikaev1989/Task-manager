@@ -5,7 +5,7 @@ import ru.yandex.praktikum.task.Task;
 import java.util.Objects;
 
 public class Node {
-    private Task task;
+    private final Task task;
     private Node next;
     private Node prev;
 
@@ -13,9 +13,6 @@ public class Node {
         this.task = task;
         this.next = next;
         this.prev = prev;
-    }
-
-    public Node() {
     }
 
     public Task getTask() {
