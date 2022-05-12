@@ -10,7 +10,6 @@ import ru.yandex.praktikum.task.Task;
 import ru.yandex.praktikum.task.TaskStatus;
 
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
@@ -48,11 +47,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         NullPointerException ex1 = assertThrows(NullPointerException.class, () -> taskManager.createTask(null));
         assertEquals("переданный task = null", ex1.getMessage());
-
-//        final List<Task> taskList = taskManager.getListTask();
-//        assertNotNull(taskManager.getListTask(), "Задачи на возвращаются.");
-//        assertEquals(1, taskList.size(), "Неверное количество задач.");
-//        assertEquals(task1, taskList.get(0), "Задачи не совпадают.");
 
     }
 
@@ -173,7 +167,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void checkUpdateEpicTask() throws ManagerSaveException {
+    void checkUpdateEpicTask() {
         EpicTask epicTask = new EpicTask();
         NullPointerException ex = assertThrows(NullPointerException.class, () -> taskManager.updateEpicTask(epicTask));
         assertEquals("epicTask = null", ex.getMessage());

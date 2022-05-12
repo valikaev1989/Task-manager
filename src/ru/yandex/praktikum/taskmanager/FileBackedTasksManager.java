@@ -99,9 +99,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     private Task fromString(String value) { //преобразование строки в задачу
-//id;type;name;status;description;startTime;duration;endTime;epic;
-        // параметр в методе записан в формате: idTask;TypeTasks;nameTask;Taskstatus;descriptionTask;epicId
-        //String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime
+        // параметр в методе записан в формате: idTask;TypeTasks;nameTask;Taskstatus;descriptionTask;startTime;duration;endTime;epicId
         Task task;
         String[] split = value.split(";");
         TypeTasks typeTasks = TypeTasks.valueOf(split[1]);

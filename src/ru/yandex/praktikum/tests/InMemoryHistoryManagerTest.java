@@ -12,7 +12,7 @@ import ru.yandex.praktikum.taskmanager.InMemoryTaskManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryHistoryManagerTest {
-    InMemoryTaskManager taskManager = new InMemoryTaskManager();
+    private final InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
     private final Task task1 = new Task("Test Task1", "Test description1");
     private final Task task2 = new Task("Test Task2", "Test description2", TaskStatus.IN_PROGRESS);
@@ -102,7 +102,4 @@ public class InMemoryHistoryManagerTest {
         int check2 = taskManager.getHistoryList().size();
         assertNotEquals(check1,check2,"Одинаковый размер списка истории после удаления");
     }
-}    //Для HistoryManager — тесты для всех методов интерфейса. Граничные условия:
-//a. Пустая история задач.
-//b. Дублирование.
-//с. Удаление из истории: начало, середина, конец.
+}

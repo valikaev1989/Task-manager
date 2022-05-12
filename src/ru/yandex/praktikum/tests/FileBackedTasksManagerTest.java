@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest {
-    private File file = new File("TestSaveTasks.csv");
+    private final File file = new File("TestSaveTasks.csv");
     private final Task task1 = new Task("Test Task1", "Test description1");
     private final Task task2 = new Task("Test Task2", "Test description2", TaskStatus.IN_PROGRESS);
     private final Task task3 = new Task("Test Task3", "Test description3", TaskStatus.DONE);
@@ -29,8 +29,8 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
     private final SubTask subTask5 = new SubTask("sub5", "desc", TaskStatus.DONE, epicTask2.getId());
     private final SubTask subTask6 = new SubTask("sub6", "desc", TaskStatus.NEW, epicTask2.getId());
     private final SubTask subTask7 = new SubTask("sub7", "desc", TaskStatus.DONE, epicTask3.getId());
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-    FileBackedTasksManager fileBackedTasksManager1 = FileBackedTasksManager.loadFromFile(file);
+    private final FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+    private final FileBackedTasksManager fileBackedTasksManager1 = FileBackedTasksManager.loadFromFile(file);
 
     public FileBackedTasksManagerTest() throws ManagerSaveException {
         super(new FileBackedTasksManager(new File("SavedTasks.csv")));
@@ -113,12 +113,12 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
         fileBackedTasksManager1.getTask(task3.getId());
         System.out.println("Список задач после загрузки:");
         for (int i = 0; i < fileBackedTasksManager1.getAllTasks().size(); i++) {
-            System.out.println((i+1)+": "+fileBackedTasksManager1.getAllTasks().get(i));
+            System.out.println((i + 1) + ": " + fileBackedTasksManager1.getAllTasks().get(i));
         }
 
         System.out.println("история после загрузки:");
         for (int i = 0; i < fileBackedTasksManager1.getHistoryList().size(); i++) {
-            System.out.println((i+1)+": "+fileBackedTasksManager1.getHistoryList().get(i));
+            System.out.println((i + 1) + ": " + fileBackedTasksManager1.getHistoryList().get(i));
         }
     }
 }

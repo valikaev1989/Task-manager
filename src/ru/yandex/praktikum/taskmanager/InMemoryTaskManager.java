@@ -10,9 +10,6 @@ import ru.yandex.praktikum.task.TaskStatus;
 import ru.yandex.praktikum.task.SubTask;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 
@@ -25,7 +22,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final TreeSet<Task> prioritizedTasks = new TreeSet<>(Task::compareTo);
 
     @Override
-
     public HashMap<Long, Task> getTasks() {
         return tasks;
     }
@@ -64,17 +60,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public TreeSet<Task> getPrioritizedTasks() {
-//        TreeSet<Task> q = new
-////        Comparator<Task> comparator = (o1, o2) -> {
-////            if (o1.getStartTime() == null) {
-////                return 1;
-////            }
-////            if (o2.getStartTime() == null) {
-////                return -1;
-////            }
-////            return (o1.getStartTime().compareTo(o2.getStartTime()));
-////        };
-//        prioritizedTasks.stream().sorted(Task::compareTo);
         return prioritizedTasks;
     }
 
@@ -404,17 +389,6 @@ public class InMemoryTaskManager implements TaskManager {
         allTasks.addAll(epics.values());
         allTasks.addAll(subTasks.values());
         return allTasks;
-    }
-
-    @Override
-    public LocalDateTime createStartTimeTask() {
-        LocalDate dateTime = LocalDate.now();
-        LocalTime q = LocalTime.now();
-        System.out.println(dateTime);
-        System.out.println(q);
-        LocalDateTime w = LocalDateTime.of(dateTime, q);
-        System.out.println(w);
-        return w;
     }
 
 }

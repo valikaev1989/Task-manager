@@ -5,7 +5,6 @@ import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.SubTask;
 import ru.yandex.praktikum.task.Task;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,13 +48,12 @@ public interface TaskManager extends Managers {
 
     List<Task> getHistoryList() throws ManagerSaveException; // метод возврата списка последних просмотренных заданий
 
-    public HashMap<Long, Task> getTasks();
+    HashMap<Long, Task> getTasks();
 
-    public HashMap<Long, EpicTask> getEpics();
+    HashMap<Long, EpicTask> getEpics();
 
-    public HashMap<Long, SubTask> getSubTasks();
+    HashMap<Long, SubTask> getSubTasks();
 
     ArrayList<Task> getAllTasks() throws ManagerSaveException;
 
-    LocalDateTime createStartTimeTask();
 }
