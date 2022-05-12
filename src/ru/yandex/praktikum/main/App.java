@@ -43,6 +43,7 @@ public class App {
             for (Task task:fileBackedTasksManager.getPrioritizedTasks()){
                 System.out.println(task);
             }
+            System.out.println(" ");
             checkDateTimeTask();
             printAllTask();
             System.out.println(" ");
@@ -278,8 +279,8 @@ public void checkDateTimeTask() throws ManagerSaveException {
         fileBackedTasksManager.getSubTask(6L);
         fileBackedTasksManager.getSubTask(11L);
         fileBackedTasksManager.getSubTask(12L);
-        fileBackedTasksManager.removeTaskInHistory(9L);//удаление эпика из истории
-        fileBackedTasksManager.removeTaskInHistory(3L);//удаление таск из истории
+        fileBackedTasksManager.deleteTasksOnId(9L);//удаление эпика из истории
+        fileBackedTasksManager.deleteTasksOnId(3L);//удаление таск из истории
         printHistory();
     }
 

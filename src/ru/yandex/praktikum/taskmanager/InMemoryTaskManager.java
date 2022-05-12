@@ -22,7 +22,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Long, Task> tasks = new HashMap<>();
     private final HashMap<Long, EpicTask> epics = new HashMap<>();
     private final HashMap<Long, SubTask> subTasks = new HashMap<>();
-    private final TreeSet<Task> date = new TreeSet<>();
+    private final TreeSet<Task> prioritizedTasks = new TreeSet<>(Task::compareTo);
 
     @Override
 
@@ -63,22 +63,33 @@ public class InMemoryTaskManager implements TaskManager {
         return identifierNumber;
     }
 
+    public TreeSet<Task> getPrioritizedTasks() {
+//        TreeSet<Task> q = new
+////        Comparator<Task> comparator = (o1, o2) -> {
+////            if (o1.getStartTime() == null) {
+////                return 1;
+////            }
+////            if (o2.getStartTime() == null) {
+////                return -1;
+////            }
+////            return (o1.getStartTime().compareTo(o2.getStartTime()));
+////        };
+//        prioritizedTasks.stream().sorted(Task::compareTo);
+        return prioritizedTasks;
+    }
+
     @Override
     public long generateID() {
         identifierNumber++;
         return identifierNumber;
     }
 
-    public void setStartTime() {
-
-    }
-
-    public boolean checkAddTime(Task task) {
+    private boolean checkAddTime(Task task) {
         if (task.getStartTime() == null) {
             return true;
         }
-        Task higher = date.ceiling(task);
-        Task lower = date.floor(task);
+        Task higher = prioritizedTasks.ceiling(task);
+        Task lower = prioritizedTasks.floor(task);
         try {
             if (lower != null && lower.getEndTime().isAfter(task.getStartTime())) {
                 return false;
@@ -91,7 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
         return true;
     }
 
-    public void setEpicTime(EpicTask epicTask) {  //----расчёт startTime,endTime,duration
+    private void setEpicTime(EpicTask epicTask) {  //----расчёт startTime,endTime,duration
         TreeSet<Task> subtaskInEpic = new TreeSet<>();
         SubTask subTask;
         if (!epicTask.getIdSubTasks().isEmpty()) {
@@ -101,15 +112,23 @@ public class InMemoryTaskManager implements TaskManager {
                     subtaskInEpic.add(subTask);
                 }
             }
-            Duration duration = Duration.between(subtaskInEpic.first().getStartTime(), subtaskInEpic.last().getEndTime());
-            int durationEpicTask = (int) duration.toMinutes();
-            epicTask.setStartTime(subtaskInEpic.first().getStartTime());
-            epicTask.setDuration(durationEpicTask);
-            epicTask.setEpicEndTime(subtaskInEpic.last().getEndTime());
+            if (!subtaskInEpic.isEmpty()) {
+                Duration duration = Duration.between(subtaskInEpic.first().getStartTime(), subtaskInEpic.last().getEndTime());
+                int durationEpicTask = (int) duration.toMinutes();
+                epicTask.setStartTime(subtaskInEpic.first().getStartTime());
+                epicTask.setDuration(durationEpicTask);
+                epicTask.setEpicEndTime(subtaskInEpic.last().getEndTime());
+            }
         } else {
             epicTask.setStartTime(null);
             epicTask.setDuration(0);
             epicTask.setEpicEndTime(null);
+        }
+    }
+
+    public void addInDateList(Task task) {
+        if (checkAddTime(task)) {
+            prioritizedTasks.add(task);
         }
     }
 
@@ -118,9 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (task != null) {
             if (task.getClass().equals(Task.class)) {
                 task.setId(generateID());
-                if (checkAddTime(task)) {
-                    date.add(task);
-                }
+                addInDateList(task);
                 tasks.put(task.getId(), task);
             } else {
                 throw new IllegalArgumentException("задача не соответствует типу Task");
@@ -151,9 +168,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (subTask.getClass().equals(SubTask.class)) {
                 if (epics.containsKey(subTask.getIdEpicTask())) {
                     subTask.setId(generateID());
-                    if (checkAddTime(subTask)) {
-                        date.add(subTask);
-                    }
+                    addInDateList(subTask);
                     subTasks.put(subTask.getId(), subTask);
                     EpicTask epicTask = epics.get(subTask.getIdEpicTask());
                     epicTask.setIdSubTasks(subTask.getId());
@@ -186,10 +201,6 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.clear();
         epics.clear();
         subTasks.clear();
-    }
-
-    public TreeSet<Task> getPrioritizedTasks() {
-        return date;
     }
 
     @Override

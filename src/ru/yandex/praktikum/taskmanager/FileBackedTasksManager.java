@@ -59,6 +59,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     EpicTask epicTask = new EpicTask();
                     if (taskFromFile.getClass() == task.getClass()) {
                         getTasks().put(taskFromFile.getId(), taskFromFile);
+                        addInDateList(taskFromFile);
                     } else if (taskFromFile.getClass() == epicTask.getClass()) {
                         epicTask = (EpicTask) taskFromFile;
                         getEpics().put(taskFromFile.getId(), epicTask);
@@ -68,6 +69,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                             if (subTask.getIdEpicTask() == epicTask1.getId()) {
                                 epicTask1.setIdSubTasks(subTask.getId());
                             }
+                        addInDateList(subTask);
                         getSubTasks().put(taskFromFile.getId(), subTask);
                     }
                 } else {//заполнение истории просмотра задач

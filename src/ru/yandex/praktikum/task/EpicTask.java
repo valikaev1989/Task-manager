@@ -4,13 +4,12 @@ package ru.yandex.praktikum.task;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.TreeSet;
 
 import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
 public class EpicTask extends Task {
-    LocalDateTime epicEndTime;
-    ArrayList<Long> idSubTasks = new ArrayList<>();
+    private LocalDateTime epicEndTime;
+    private final ArrayList<Long> idSubTasks = new ArrayList<>();
 
     public EpicTask(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime, LocalDateTime epicEndTime) {
         super(nameTask, description, status, id, duration, startTime);
@@ -26,6 +25,10 @@ public class EpicTask extends Task {
     }
 
     public EpicTask() {
+    }
+
+    public LocalDateTime getEpicEndTime() {
+        return epicEndTime;
     }
 
     public ArrayList<Long> getIdSubTasks() {
