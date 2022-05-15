@@ -43,15 +43,17 @@ public class InMemoryTaskManager implements TaskManager {
         return historyList;
     }
 
+    @Override
     public HistoryManager getHistoryManager() {
         return historyManager;
     }
 
+    @Override
     public void removeTaskInHistory(long id) {
         historyManager.remove(id);
     }
 
-    public void setIndetifierNumber(long identifierNumber) {
+    protected void setIndetifierNumber(long identifierNumber) {
         this.identifierNumber = identifierNumber;
     }
 
@@ -59,12 +61,12 @@ public class InMemoryTaskManager implements TaskManager {
         return identifierNumber;
     }
 
+    @Override
     public TreeSet<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
 
-    @Override
-    public long generateID() {
+    private long generateID() {
         identifierNumber++;
         return identifierNumber;
     }
@@ -111,6 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
     public void addInDateList(Task task) {
         if (checkAddTime(task)) {
             prioritizedTasks.add(task);

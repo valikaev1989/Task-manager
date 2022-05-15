@@ -1,5 +1,6 @@
 package ru.yandex.praktikum.main;
 
+import ru.yandex.praktikum.api.HTTPTaskServer;
 import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.task.*;
 import ru.yandex.praktikum.taskmanager.FileBackedTasksManager;
@@ -15,95 +16,117 @@ public class App {
     private FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
     private final Scanner scanner = new Scanner(System.in);
 
-    public void start() throws ManagerSaveException {
+    public void start() throws IOException {
         System.out.println("1 - первый запуск и запись в файл всех задач из метода check()");
         System.out.println("2- загрузка из файла SavedTasks.csv всех задач");
         System.out.println("3 - проверка даты");
         int command = scanner.nextInt();
-        if (command == 1) {
-            check();
-        } else if (command == 2) {
-            fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
-            printAllTask();
-            System.out.println(" ");
-            printHistory();
-            createNewTasksAfterLoad();// метод создания новых задач после загрузки
-            printAllTask();
-            System.out.println(" ");
-            printHistory();
-            System.out.println("ID:" + fileBackedTasksManager.getIndetifierNumber());
-        }else if(command==3){
-            fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
-            printAllTask();
-            System.out.println(" ");
-            printHistory();
-            System.out.println();
-            System.out.println("приоритет задач");
-            for (Task task:fileBackedTasksManager.getPrioritizedTasks()){
-                System.out.println(task);
-            }
-            System.out.println(" ");
-            checkDateTimeTask();
-            printAllTask();
-            System.out.println(" ");
-            printHistory();
-            System.out.println();
-            System.out.println("приоритет задач");
-            for (Task task:fileBackedTasksManager.getPrioritizedTasks()){
-                System.out.println(task);
-            }
+        switch (command) {
+            case 1:
+                check();
+                new HTTPTaskServer().start();
+                break;
+            case 2:
+                fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
+                printAllTask();
+                System.out.println(" ");
+                printHistory();
+                createNewTasksAfterLoad();// метод создания новых задач после загрузки
+                printAllTask();
+                System.out.println(" ");
+                printHistory();
+                System.out.println("ID:" + fileBackedTasksManager.getIndetifierNumber());
+                break;
+            case 3:
+                fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
+                printAllTask();
+                System.out.println(" ");
+                printHistory();
+                System.out.println();
+                System.out.println("приоритет задач");
+                for (Task task : fileBackedTasksManager.getPrioritizedTasks()) {
+                    System.out.println(task);
+                }
+                System.out.println(" ");
+                checkDateTimeTask();
+                printAllTask();
+                System.out.println(" ");
+                printHistory();
+                System.out.println();
+                System.out.println("приоритет задач");
+                for (Task task : fileBackedTasksManager.getPrioritizedTasks()) {
+                    System.out.println(task);
+                }
+                new HTTPTaskServer().start();
+                break;
+            case 4:
+               new HTTPTaskServer().start();
+               break;
+
+            default:
+                System.out.println("не верный выбор");
         }
+
     }
-public void checkDateTimeTask() throws ManagerSaveException {
-    Task task1 = new Task("Task1", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 15));
-    Task task5 = new Task("Task5", "description");
-    Task task2 = new Task("Task2", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 25));
-    Task task6 = new Task("Task6", "description");
-    Task task3 = new Task("Task3", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 30));
-    Task task4 = new Task("Task4", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 35));
-    Task task8 = new Task("Task8", "description");
-    Task task7 = new Task("Task7", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 33));
-    Task task9 = new Task("Task9", "description");
 
-    EpicTask epic1 = new EpicTask("epic1", "desc");
-    EpicTask epic2 = new EpicTask("epic2", "desc");
-    fileBackedTasksManager.createEpicTask(epic1);
-    fileBackedTasksManager.createEpicTask(epic2);
-    fileBackedTasksManager.createTask(task1);
-    fileBackedTasksManager.createTask(task5);
-    fileBackedTasksManager.createTask(task2);
-    fileBackedTasksManager.createTask(task6);
-    fileBackedTasksManager.createTask(task3);
-    fileBackedTasksManager.createTask(task4);
-    fileBackedTasksManager.createTask(task8);
-    fileBackedTasksManager.createTask(task7);
-    fileBackedTasksManager.createTask(task9);
+    public void HTTP() {
 
-    SubTask subTask1 = new SubTask("sub1", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 26), epic1.getId());
-    SubTask subTask5 = new SubTask("sub5", "desc", epic1.getId());
-    SubTask subTask2 = new SubTask("sub2", "desc", 2, LocalDateTime.of(2022, 5, 11, 10, 40), epic1.getId());
-    SubTask subTask3 = new SubTask("sub3", "desc", 3, LocalDateTime.of(2022, 5, 11, 10, 21), epic2.getId());
-    SubTask subTask4 = new SubTask("sub4", "desc", 4, LocalDateTime.of(2022, 5, 11, 10, 37), epic1.getId());
-    SubTask subTask6 = new SubTask("sub6", "desc", epic2.getId());
-    fileBackedTasksManager.createSubTask(subTask1);
-    fileBackedTasksManager.createSubTask(subTask5);
-    fileBackedTasksManager.createSubTask(subTask2);
-    fileBackedTasksManager.createSubTask(subTask3);
-    fileBackedTasksManager.createSubTask(subTask4);
-    fileBackedTasksManager.createSubTask(subTask6);
+    }
 
-    fileBackedTasksManager.getTask(task1.getId());
-    fileBackedTasksManager.getTask(task2.getId());
-    fileBackedTasksManager.getTask(task3.getId());
-    fileBackedTasksManager.getTask(task4.getId());
-    fileBackedTasksManager.getTask(task5.getId());
-    fileBackedTasksManager.getSubTask(subTask1.getId());
-    fileBackedTasksManager.getSubTask(subTask2.getId());
-    fileBackedTasksManager.getSubTask(subTask3.getId());
-    fileBackedTasksManager.getSubTask(subTask4.getId());
-    fileBackedTasksManager.getEpicTask(epic1.getId());
-    fileBackedTasksManager.getEpicTask(epic2.getId());
-}
+    public  FileBackedTasksManager getTaskManagerinApp() throws ManagerSaveException {
+       return fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
+    }
+    public void checkDateTimeTask() throws ManagerSaveException {
+        Task task1 = new Task("Task1", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 15));
+        Task task5 = new Task("Task5", "description");
+        Task task2 = new Task("Task2", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 25));
+        Task task6 = new Task("Task6", "description");
+        Task task3 = new Task("Task3", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 30));
+        Task task4 = new Task("Task4", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 35));
+        Task task8 = new Task("Task8", "description");
+        Task task7 = new Task("Task7", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 33));
+        Task task9 = new Task("Task9", "description");
+
+        EpicTask epic1 = new EpicTask("epic1", "desc");
+        EpicTask epic2 = new EpicTask("epic2", "desc");
+        fileBackedTasksManager.createEpicTask(epic1);
+        fileBackedTasksManager.createEpicTask(epic2);
+        fileBackedTasksManager.createTask(task1);
+        fileBackedTasksManager.createTask(task5);
+        fileBackedTasksManager.createTask(task2);
+        fileBackedTasksManager.createTask(task6);
+        fileBackedTasksManager.createTask(task3);
+        fileBackedTasksManager.createTask(task4);
+        fileBackedTasksManager.createTask(task8);
+        fileBackedTasksManager.createTask(task7);
+        fileBackedTasksManager.createTask(task9);
+
+        SubTask subTask1 = new SubTask("sub1", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 26), epic1.getId());
+        SubTask subTask5 = new SubTask("sub5", "desc", epic1.getId());
+        SubTask subTask2 = new SubTask("sub2", "desc", 2, LocalDateTime.of(2022, 5, 11, 10, 40), epic1.getId());
+        SubTask subTask3 = new SubTask("sub3", "desc", 3, LocalDateTime.of(2022, 5, 11, 10, 21), epic2.getId());
+        SubTask subTask4 = new SubTask("sub4", "desc", 4, LocalDateTime.of(2022, 5, 11, 10, 37), epic1.getId());
+        SubTask subTask6 = new SubTask("sub6", "desc", epic2.getId());
+        fileBackedTasksManager.createSubTask(subTask1);
+        fileBackedTasksManager.createSubTask(subTask5);
+        fileBackedTasksManager.createSubTask(subTask2);
+        fileBackedTasksManager.createSubTask(subTask3);
+        fileBackedTasksManager.createSubTask(subTask4);
+        fileBackedTasksManager.createSubTask(subTask6);
+
+        fileBackedTasksManager.getTask(task1.getId());
+        fileBackedTasksManager.getTask(task2.getId());
+        fileBackedTasksManager.getTask(task3.getId());
+        fileBackedTasksManager.getTask(task4.getId());
+        fileBackedTasksManager.getTask(task5.getId());
+        fileBackedTasksManager.getSubTask(subTask1.getId());
+        fileBackedTasksManager.getSubTask(subTask2.getId());
+        fileBackedTasksManager.getSubTask(subTask3.getId());
+        fileBackedTasksManager.getSubTask(subTask4.getId());
+        fileBackedTasksManager.getEpicTask(epic1.getId());
+        fileBackedTasksManager.getEpicTask(epic2.getId());
+    }
+
     public void createNewTasksAfterLoad() throws ManagerSaveException {
         Task task1 = new Task("Task1", "description");
         fileBackedTasksManager.createTask(task1);
@@ -240,6 +263,7 @@ public void checkDateTimeTask() throws ManagerSaveException {
         getTask();// печать истории с учетом удаления двух подзадач выше и удалением в самом методе эпика 5,задачи 3
         System.out.println(" " + "\n");
         printAllTask();//печать оставшихся задач из хранилищ с задачами
+        System.out.println(fileBackedTasksManager.getAllTasks());
     }
 
     public void printAllTask() {//печать всех задач

@@ -15,10 +15,13 @@ import java.util.List;
 import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
-    private final File fileName;// путь к файлу сохранения задач
+    private File fileName;// путь к файлу сохранения задач
 
     public FileBackedTasksManager(File fileName) {
         this.fileName = fileName;
+    }
+
+    public FileBackedTasksManager() {
     }
 
     public void save() throws ManagerSaveException {//метод записи в файл сохранения
@@ -125,7 +128,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             task = new EpicTask(nameTask, description, TaskStatus.valueOf(split[3]), id, duration, startTime, endTime);
         } else {
             long epicId = Long.parseLong(split[8]);
-            task = new SubTask(nameTask, description, TaskStatus.valueOf(split[3]), id, epicId);
+            task = new SubTask(nameTask, description, TaskStatus.valueOf(split[3]), id,duration,startTime, epicId);
         }
         return task;
     }

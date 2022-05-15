@@ -13,6 +13,7 @@ public class Task implements Comparable<Task> {
     private Long id;
     private int duration;
     private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     public Task(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime) {
         this.nameTask = nameTask;
@@ -96,7 +97,8 @@ public class Task implements Comparable<Task> {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plusMinutes(duration);
+        this.endTime = startTime.plusMinutes(duration);
+        return endTime;
     }
 
 
@@ -119,13 +121,11 @@ public class Task implements Comparable<Task> {
     public String toString() {
         String result;
         try {
-            String q = String.valueOf(startTime);
-            String w = String.valueOf(getEndTime());
             result = id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
-                    + status + splitter + description + splitter + q + splitter + duration + splitter + w;
+                    + status + splitter + description + splitter + startTime + splitter + duration + splitter + getEndTime();
         } catch (NullPointerException ex) {
-            String q = String.valueOf(startTime);
-            String w = "null";
+            String q = null;
+            String w = null;
             result = id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
                     + status + splitter + description + splitter + q + splitter + duration + splitter + w;
         }

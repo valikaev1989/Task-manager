@@ -8,9 +8,9 @@ import ru.yandex.praktikum.task.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager extends Managers {
-    long generateID();
 
     void createTask(Task task) throws ManagerSaveException;
 
@@ -55,5 +55,13 @@ public interface TaskManager extends Managers {
     HashMap<Long, SubTask> getSubTasks();
 
     ArrayList<Task> getAllTasks() throws ManagerSaveException;
+
+    HistoryManager getHistoryManager();
+
+    void removeTaskInHistory(long id);
+
+    void addInDateList(Task task);
+
+    TreeSet<Task> getPrioritizedTasks();
 
 }

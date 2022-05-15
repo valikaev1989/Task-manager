@@ -82,10 +82,10 @@ public class SubTask extends Task {
             String w = String.valueOf(getEndTime());
             result = getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
                     splitter + getStatus() + splitter + getDescription() + splitter +
-                    q + splitter + getDuration() + splitter + w + splitter + idEpicTask;
+                    getStartTime() + splitter + getDuration() + splitter + getEndTime() + splitter + idEpicTask;
         }catch (NullPointerException ex){
-            String q = String.valueOf(getStartTime());
-            String w = "null";
+            String q = null;
+            String w = null;
             result = getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
                     splitter + getStatus() + splitter + getDescription() + splitter +
                     q + splitter + getDuration() + splitter + w + splitter + idEpicTask;

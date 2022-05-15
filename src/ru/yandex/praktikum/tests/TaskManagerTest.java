@@ -14,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
     protected T taskManager;
+    public TaskManagerTest(T taskManager) {
+        this.taskManager = taskManager;
+    }
     private final Task task1 = new Task("Test Task1", "Test description1");
     private final Task task2 = new Task("Test Task2", "Test description2", TaskStatus.IN_PROGRESS);
     private final Task task3 = new Task("Test Task3", "Test description3", TaskStatus.DONE);
@@ -28,9 +31,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     private final SubTask subTask6 = new SubTask("sub6", "desc", TaskStatus.NEW, epicTask2.getId());
     private final SubTask subTask7 = new SubTask("sub7", "desc", TaskStatus.DONE, epicTask3.getId());
 
-    public TaskManagerTest(T taskManager) {
-        this.taskManager = taskManager;
-    }
+
 
     @AfterEach
     void clearCollections() throws ManagerSaveException {
