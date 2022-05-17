@@ -9,6 +9,7 @@ import ru.yandex.praktikum.task.Task;
 import ru.yandex.praktikum.task.TaskStatus;
 import ru.yandex.praktikum.task.SubTask;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getHistoryList() throws ManagerSaveException { // переписанный метод возврата списка последних 10 просмотренных задач
+    public List<Task> getHistoryList() throws IOException, InterruptedException { // переписанный метод возврата списка последних 10 просмотренных задач
         List<Task> historyList;
         historyList = historyManager.getHistory();
         return historyList;
@@ -121,7 +122,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(Task task) throws ManagerSaveException {
+    public void createTask(Task task) throws IOException, InterruptedException {
         if (task != null) {
             if (task.getClass().equals(Task.class)) {
                 task.setId(generateID());
@@ -137,7 +138,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void createEpicTask(EpicTask epicTask) throws ManagerSaveException {
+    public void createEpicTask(EpicTask epicTask) throws IOException, InterruptedException {
         if (epicTask != null) {
             if (epicTask.getClass().equals(EpicTask.class)) {
                 epicTask.setId(generateID());
@@ -151,7 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createSubTask(SubTask subTask) throws ManagerSaveException {
+    public void createSubTask(SubTask subTask) throws IOException, InterruptedException {
         if (subTask != null) {
             if (subTask.getClass().equals(SubTask.class)) {
                 if (epics.containsKey(subTask.getIdEpicTask())) {
@@ -174,7 +175,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearAllTask() throws ManagerSaveException {
+    public void clearAllTask() throws IOException, InterruptedException {
 
         for (Task task : getListTask()) {
             if (getHistoryList().contains(task)) {
@@ -192,7 +193,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(Long id) throws ManagerSaveException {
+    public Task getTask(Long id) throws IOException, InterruptedException {
         if (id != null) {
             if (id > 0) {
                 if (tasks.containsKey(id)) {
@@ -211,7 +212,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public EpicTask getEpicTask(Long id) throws ManagerSaveException {
+    public EpicTask getEpicTask(Long id) throws IOException, InterruptedException {
         if (id != null) {
             if (id > 0) {
                 if (epics.containsKey(id)) {
@@ -230,7 +231,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public SubTask getSubTask(Long id) throws ManagerSaveException {
+    public SubTask getSubTask(Long id) throws IOException, InterruptedException {
         if (id != null) {
             if (id > 0) {
                 if (subTasks.containsKey(id)) {
@@ -249,7 +250,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) throws ManagerSaveException {
+    public void updateTask(Task task) throws IOException, InterruptedException {
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         } else {
@@ -259,7 +260,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) throws ManagerSaveException {
+    public void updateSubTask(SubTask subTask) throws IOException, InterruptedException {
         if (subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
             EpicTask epicTask = epics.get(subTask.getIdEpicTask());
@@ -271,7 +272,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpicTask(EpicTask epicTask) throws ManagerSaveException {
+    public void updateEpicTask(EpicTask epicTask) throws IOException, InterruptedException {
         if (epics.containsKey(epicTask.getId())) {
             ArrayList<String> statusDone = new ArrayList<>();
             ArrayList<String> statusNew = new ArrayList<>();
@@ -299,7 +300,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTasksOnId(Long id) throws ManagerSaveException {
+    public void deleteTasksOnId(Long id) throws IOException, InterruptedException {
         if (id != null) {
             if (id > 0) {
                 if (tasks.containsKey(id)) {
@@ -320,7 +321,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTask(Long id) throws ManagerSaveException {
+    public void deleteTask(Long id) throws IOException, InterruptedException {
         Task task = tasks.get(id);
         if (getHistoryList().contains(task)) {
             historyManager.remove(id);
@@ -329,7 +330,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpicTask(Long id) throws ManagerSaveException {
+    public void deleteEpicTask(Long id) throws IOException, InterruptedException {
         EpicTask epicTask = epics.get(id);
         for (long idSubTask : epicTask.getIdSubTasks()) {
             SubTask subTask = subTasks.get(idSubTask);
@@ -346,7 +347,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteSubTask(Long id) throws ManagerSaveException {
+    public void deleteSubTask(Long id) throws IOException, InterruptedException {
         SubTask subTask = subTasks.get(id);
         EpicTask epicTask = epics.get(subTask.getIdEpicTask());
         epicTask.getIdSubTasks().remove(id);
@@ -373,6 +374,11 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             throw new NullPointerException("idEpicTask = null");
         }
+    }
+
+    @Override
+    public ArrayList<SubTask> getListSubTask() {
+        return new ArrayList<>(subTasks.values());
     }
 
     @Override

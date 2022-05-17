@@ -8,6 +8,8 @@ import ru.yandex.praktikum.task.SubTask;
 import ru.yandex.praktikum.task.TaskStatus;
 import ru.yandex.praktikum.taskmanager.InMemoryTaskManager;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTaskUpdateStatusTest {
@@ -19,27 +21,27 @@ class EpicTaskUpdateStatusTest {
     private final SubTask subTask4 = new SubTask("sub4", "desc", TaskStatus.NEW, epic1.getId());
 
     @BeforeAll
-    static void shouldCheckEmptyListIdSubTask() throws ManagerSaveException {
+    static void shouldCheckEmptyListIdSubTask() throws IOException, InterruptedException {
         inMemoryTaskManager.createEpicTask(epic1);
         assertEquals(TaskStatus.NEW, epic1.getStatus());
     }
 
     @Test
-    public void shouldCheckNewStatusEpicTask() throws ManagerSaveException {
+    public void shouldCheckNewStatusEpicTask() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask1);
         assertEquals(TaskStatus.NEW, epic1.getStatus());
         inMemoryTaskManager.deleteTasksOnId(subTask1.getId());
     }
 
     @Test
-    public void shouldCheckInProgressStatusEpicTask() throws ManagerSaveException {
+    public void shouldCheckInProgressStatusEpicTask() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask3);
         assertEquals(TaskStatus.IN_PROGRESS, epic1.getStatus());
         inMemoryTaskManager.deleteTasksOnId(subTask3.getId());
     }
 
     @Test
-    public void shouldCheckDoneStatusEpicTask() throws ManagerSaveException {
+    public void shouldCheckDoneStatusEpicTask() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask2);
         assertEquals(TaskStatus.DONE, epic1.getStatus());
         inMemoryTaskManager.createSubTask(subTask1);
@@ -51,7 +53,7 @@ class EpicTaskUpdateStatusTest {
     }
 
     @Test
-    public void shouldCheckDoneStatusEpicTask2() throws ManagerSaveException {
+    public void shouldCheckDoneStatusEpicTask2() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask1);
         inMemoryTaskManager.createSubTask(subTask2);
         inMemoryTaskManager.createSubTask(subTask3);
@@ -64,7 +66,7 @@ class EpicTaskUpdateStatusTest {
         inMemoryTaskManager.deleteTasksOnId(subTask2.getId());
     }
     @Test
-    public void shouldCheckInProgressStatusEpicTask2() throws ManagerSaveException {
+    public void shouldCheckInProgressStatusEpicTask2() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask1);
         inMemoryTaskManager.createSubTask(subTask2);
         inMemoryTaskManager.createSubTask(subTask3);
@@ -77,7 +79,7 @@ class EpicTaskUpdateStatusTest {
         inMemoryTaskManager.deleteTasksOnId(subTask4.getId());
     }
     @Test
-    public void shouldCheckNewStatusEpicTask2() throws ManagerSaveException {
+    public void shouldCheckNewStatusEpicTask2() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask1);
         inMemoryTaskManager.createSubTask(subTask2);
         inMemoryTaskManager.createSubTask(subTask3);

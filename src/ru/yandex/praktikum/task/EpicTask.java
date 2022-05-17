@@ -65,22 +65,8 @@ public class EpicTask extends Task {
 
     @Override
     public String toString() {
-        String result;
-        try {
-            String q = String.valueOf(getStartTime());
-            String w = String.valueOf(getEndTime());
-            result = getId().toString() + splitter + TypeTasks.EpicTask + splitter + getNameTask() +
+            return getId().toString() + splitter + TypeTasks.EpicTask + splitter + getNameTask() +
                     splitter + getStatus() + splitter + getDescription() + splitter +
-                    q + splitter + getDuration() + splitter + w;
-        } catch (NullPointerException ex) {
-            String q = String.valueOf(getStartTime());
-            String w = "null";
-            result = getId().toString() + splitter + TypeTasks.EpicTask + splitter + getNameTask() +
-                    splitter + getStatus() + splitter + getDescription() + splitter +
-                    q + splitter + getDuration() + splitter + w;
-        }
-
-        return result;
-
+                    getStartTime() + splitter + getDuration() + splitter +epicEndTime;
     }
 }

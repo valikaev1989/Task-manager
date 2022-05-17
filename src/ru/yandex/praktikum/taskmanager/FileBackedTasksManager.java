@@ -21,10 +21,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         this.fileName = fileName;
     }
 
-    public FileBackedTasksManager() {
-    }
-
-    public void save() throws ManagerSaveException {//метод записи в файл сохранения
+    public void save() throws IOException, InterruptedException {//метод записи в файл сохранения
         try (Writer fileWriter = new FileWriter(fileName, StandardCharsets.UTF_8)) {
             fileWriter.write("id" + splitter + "type" + splitter + "name" + splitter + "status" + splitter
                     + "description" + splitter
@@ -46,7 +43,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return fileBackedTasksManager;
     }
 
-    private void readFile() throws ManagerSaveException {//заполнение менеджера задач и истории просмотра из файла
+    public void readForHTTPTaskManager() throws ManagerSaveException {
+        readFile();
+    }
+
+    protected void readFile() throws ManagerSaveException {//заполнение менеджера задач и истории просмотра из файла
         long identifierNumber = 0;
         try (BufferedReader fileReader = new BufferedReader(new FileReader(fileName, StandardCharsets.UTF_8))) {
 
@@ -98,6 +99,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Произошла ошибка во время чтения файла.", e);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -128,7 +131,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             task = new EpicTask(nameTask, description, TaskStatus.valueOf(split[3]), id, duration, startTime, endTime);
         } else {
             long epicId = Long.parseLong(split[8]);
-            task = new SubTask(nameTask, description, TaskStatus.valueOf(split[3]), id,duration,startTime, epicId);
+            task = new SubTask(nameTask, description, TaskStatus.valueOf(split[3]), id, duration, startTime, epicId);
         }
         return task;
     }
@@ -144,81 +147,107 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     private static String toString(HistoryManager manager) {//получение строки с id задач в истории просмотра
-        return manager.toString();
+        if (!(manager == null)) {
+            return manager.toString();
+        }
+        return "null";
     }
 
     @Override
-    public void createTask(Task task) throws ManagerSaveException {
+    public void createTask(Task task) throws IOException, InterruptedException {
         super.createTask(task);
         save();
     }
 
     @Override
-    public void createEpicTask(EpicTask epicTask) throws ManagerSaveException {
+    public void createEpicTask(EpicTask epicTask) throws IOException, InterruptedException {
         super.createEpicTask(epicTask);
         save();
     }
 
     @Override
-    public void createSubTask(SubTask subTask) throws ManagerSaveException {
+    public void createSubTask(SubTask subTask) throws IOException, InterruptedException {
         super.createSubTask(subTask);
         save();
     }
 
     @Override
-    public void clearAllTask() throws ManagerSaveException {
+    public void clearAllTask() throws IOException, InterruptedException {
         super.clearAllTask();
         save();
     }
 
     @Override
-    public Task getTask(Long id) throws ManagerSaveException {
+    public Task getTask(Long id) throws IOException, InterruptedException {
         Task task = super.getTask(id);
         save();
         return task;
     }
 
     @Override
-    public EpicTask getEpicTask(Long id) throws ManagerSaveException {
+    public EpicTask getEpicTask(Long id) throws IOException, InterruptedException {
         EpicTask epicTask = super.getEpicTask(id);
         save();
         return epicTask;
     }
 
     @Override
-    public SubTask getSubTask(Long id) throws ManagerSaveException {
+    public SubTask getSubTask(Long id) throws IOException, InterruptedException {
         SubTask subTask = super.getSubTask(id);
         save();
         return subTask;
     }
 
     @Override
-    public void updateTask(Task task) throws ManagerSaveException {
+    public void updateTask(Task task) throws IOException, InterruptedException {
         super.updateTask(task);
         save();
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) throws ManagerSaveException {
+    public void updateSubTask(SubTask subTask) throws IOException, InterruptedException {
         super.updateSubTask(subTask);
         save();
     }
 
     @Override
-    public void updateEpicTask(EpicTask epicTask) throws ManagerSaveException {
+    public void updateEpicTask(EpicTask epicTask) throws IOException, InterruptedException {
         super.updateEpicTask(epicTask);
         save();
     }
 
     @Override
-    public void deleteTasksOnId(Long id) throws ManagerSaveException {
+    public void deleteTasksOnId(Long id) throws IOException, InterruptedException {
         super.deleteTasksOnId(id);
+        save();
+    }
+
+    @Override
+    public void deleteTask(Long id) throws IOException, InterruptedException {
+        super.deleteTask(id);
+        save();
+    }
+
+    @Override
+    public void deleteEpicTask(Long id) throws IOException, InterruptedException {
+        super.deleteEpicTask(id);
+        save();
+    }
+
+    @Override
+    public void deleteSubTask(Long id) throws IOException, InterruptedException {
+        super.deleteSubTask(id);
         save();
     }
 
     @Override
     public ArrayList<SubTask> getListSubTaskFromEpic(Long idEpicTask) {
         return super.getListSubTaskFromEpic(idEpicTask);
+    }
+
+    @Override
+    public ArrayList<SubTask> getListSubTask() {
+        return super.getListSubTask();
     }
 
     @Override
@@ -232,7 +261,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public List<Task> getHistoryList() throws ManagerSaveException {
+    public List<Task> getHistoryList() throws IOException, InterruptedException {
         super.getHistoryList();
         save();
         return super.getHistoryList();

@@ -28,7 +28,16 @@ public class KVServer {
     }
 
     private void load(HttpExchange h) {
-        // TODO Добавьте получение значения по ключу
+        try {
+            String text;
+            String key = h.getRequestURI().getPath().substring("/load/".length());
+            text = data.getOrDefault(key, "null");
+            sendText(h, text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            h.close();
+        }  // TODO Добавьте получение значения по ключу
     }
 
     private void save(HttpExchange h) throws IOException {

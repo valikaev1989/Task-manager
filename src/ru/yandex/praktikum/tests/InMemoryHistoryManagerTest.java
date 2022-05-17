@@ -9,6 +9,8 @@ import ru.yandex.praktikum.task.Task;
 import ru.yandex.praktikum.task.TaskStatus;
 import ru.yandex.praktikum.taskmanager.InMemoryTaskManager;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryHistoryManagerTest {
@@ -30,7 +32,7 @@ public class InMemoryHistoryManagerTest {
 
 
     @BeforeEach
-    void create() throws ManagerSaveException {
+    void create() throws IOException, InterruptedException {
         taskManager.createTask(task1);
         taskManager.createTask(task2);
         taskManager.createTask(task3);
@@ -73,14 +75,14 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void checkEmptyHistoryList() throws ManagerSaveException {
+    void checkEmptyHistoryList() throws IOException, InterruptedException {
         assertFalse(taskManager.getHistoryList().isEmpty(), "В списке истории нет задач");
         taskManager.clearAllTask();
         assertTrue(taskManager.getHistoryList().isEmpty(), "В списке истории есть задачи");
     }
 
     @Test
-    void checkDublicateHistoryList() throws ManagerSaveException {
+    void checkDublicateHistoryList() throws IOException, InterruptedException {
         int check = 0;
         assertFalse(taskManager.getHistoryList().isEmpty(), "В списке истории нет задач");
         Task task = taskManager.getHistoryList().get(0);
@@ -96,7 +98,7 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void checkRemoveFromHistoryList() throws ManagerSaveException {
+    void checkRemoveFromHistoryList() throws IOException, InterruptedException {
         int check1 = taskManager.getHistoryList().size();
         taskManager.removeTaskInHistory(taskManager.getHistoryList().get(0).getId());
         int check2 = taskManager.getHistoryList().size();

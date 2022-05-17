@@ -119,17 +119,9 @@ public class Task implements Comparable<Task> {
 
     @Override
     public String toString() {
-        String result;
-        try {
-            result = id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
-                    + status + splitter + description + splitter + startTime + splitter + duration + splitter + getEndTime();
-        } catch (NullPointerException ex) {
-            String q = null;
-            String w = null;
-            result = id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
-                    + status + splitter + description + splitter + q + splitter + duration + splitter + w;
-        }
-        return result;
+        String endTime = startTime == null ? null : getEndTime().toString();
+        return id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
+                + status + splitter + description + splitter + startTime + splitter + duration + splitter + endTime;
     }
 
     @Override

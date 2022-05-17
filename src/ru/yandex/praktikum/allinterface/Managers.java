@@ -1,6 +1,6 @@
 package ru.yandex.praktikum.allinterface;
 
-import ru.yandex.praktikum.api.HTTPTaskServer;
+import ru.yandex.praktikum.api.HTTPTaskManager;
 import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.historymanager.InMemoryHistoryManager;
 import ru.yandex.praktikum.taskmanager.FileBackedTasksManager;
@@ -22,8 +22,12 @@ public interface Managers {
         return new InMemoryTaskManager();
     }
 
-    static TaskManager getHTTPTaskServer() throws IOException {
-        return new HTTPTaskServer();
+    static HTTPTaskManager getHTTPTaskManager() throws IOException, InterruptedException {
+        return new HTTPTaskManager("http://localhost:8078");
+    }
+
+    static HTTPTaskManager getHTTPTaskManagerLoad() throws IOException, InterruptedException {
+        return HTTPTaskManager.loadInServerFromSavedTasks();
     }
 
 }

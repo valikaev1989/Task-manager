@@ -16,10 +16,9 @@ public class App {
     private FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
     private final Scanner scanner = new Scanner(System.in);
 
-    public void start() throws IOException {
-        System.out.println("1 - первый запуск и запись в файл всех задач из метода check()");
-        System.out.println("2- загрузка из файла SavedTasks.csv всех задач");
-        System.out.println("3 - проверка даты");
+    public void start() throws IOException, InterruptedException {
+        System.out.println("1 - запуск клиента и запись на сервер");
+        System.out.println("2- загрузка из файла SavedTasks.csv на сервер");
         int command = scanner.nextInt();
         switch (command) {
             case 1:
@@ -59,27 +58,16 @@ public class App {
                 }
                 new HTTPTaskServer().start();
                 break;
-            case 4:
-               new HTTPTaskServer().start();
-               break;
-
             default:
                 System.out.println("не верный выбор");
         }
 
     }
 
-    public void HTTP() {
-
-    }
-
-    public  FileBackedTasksManager getTaskManagerinApp() throws ManagerSaveException {
-       return fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
-    }
-    public void checkDateTimeTask() throws ManagerSaveException {
+    public void checkDateTimeTask() throws IOException, InterruptedException {
         Task task1 = new Task("Task1", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 15));
         Task task5 = new Task("Task5", "description");
-        Task task2 = new Task("Task2", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 25));
+        Task task2 = new Task("Task2", "description", 10, LocalDateTime.of(2022, 5, 11, 10, 25));
         Task task6 = new Task("Task6", "description");
         Task task3 = new Task("Task3", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 30));
         Task task4 = new Task("Task4", "description", 1, LocalDateTime.of(2022, 5, 11, 10, 35));
@@ -101,7 +89,7 @@ public class App {
         fileBackedTasksManager.createTask(task7);
         fileBackedTasksManager.createTask(task9);
 
-        SubTask subTask1 = new SubTask("sub1", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 26), epic1.getId());
+        SubTask subTask1 = new SubTask("sub1", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 10), epic1.getId());
         SubTask subTask5 = new SubTask("sub5", "desc", epic1.getId());
         SubTask subTask2 = new SubTask("sub2", "desc", 2, LocalDateTime.of(2022, 5, 11, 10, 40), epic1.getId());
         SubTask subTask3 = new SubTask("sub3", "desc", 3, LocalDateTime.of(2022, 5, 11, 10, 21), epic2.getId());
@@ -127,7 +115,7 @@ public class App {
         fileBackedTasksManager.getEpicTask(epic2.getId());
     }
 
-    public void createNewTasksAfterLoad() throws ManagerSaveException {
+    public void createNewTasksAfterLoad() throws IOException, InterruptedException {
         Task task1 = new Task("Task1", "description");
         fileBackedTasksManager.createTask(task1);
         fileBackedTasksManager.getTask(getIdTask(task1));
@@ -166,7 +154,7 @@ public class App {
         return idTask;
     }
 
-    public void check() throws ManagerSaveException {
+    public void check() throws IOException, InterruptedException {
 
         // Создаем первую задачу:
         Task task1 = new Task("Придумать сложную задачу", "описание для первой задачи");
@@ -281,7 +269,7 @@ public class App {
         }
     }
 
-    public void getTask() throws ManagerSaveException { //метод проверки удаления из истории просмотра дублей
+    public void getTask() throws IOException, InterruptedException { //метод проверки удаления из истории просмотра дублей
         //и принудительного удаления задач из истории
         fileBackedTasksManager.getTask(1L);
         fileBackedTasksManager.getTask(2L);
@@ -307,7 +295,7 @@ public class App {
         printHistory();
     }
 
-    public void printHistory() throws ManagerSaveException {//печать истории просмотра
+    public void printHistory() throws IOException, InterruptedException {//печать истории просмотра
         List<Task> history = fileBackedTasksManager.getHistoryList();
         if (history.isEmpty()) {
             System.out.println("История просмотров пуста");

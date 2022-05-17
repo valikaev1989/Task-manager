@@ -76,21 +76,11 @@ public class SubTask extends Task {
     //id,type,name,status,description,epic
     @Override
     public String toString() {
-        String result;
-        try {
-            String q = String.valueOf(getStartTime());
-            String w = String.valueOf(getEndTime());
-            result = getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
-                    splitter + getStatus() + splitter + getDescription() + splitter +
-                    getStartTime() + splitter + getDuration() + splitter + getEndTime() + splitter + idEpicTask;
-        }catch (NullPointerException ex){
-            String q = null;
-            String w = null;
-            result = getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
-                    splitter + getStatus() + splitter + getDescription() + splitter +
-                    q + splitter + getDuration() + splitter + w + splitter + idEpicTask;
-        }
+        String endTime = getStartTime() == null ? null : getEndTime().toString();
 
-        return result;
+            return getId().toString() + splitter + TypeTasks.SubTask + splitter + getNameTask() +
+                    splitter + getStatus() + splitter + getDescription() + splitter +
+                    getStartTime() + splitter + getDuration() + splitter + endTime + splitter + idEpicTask;
+
     }
 }

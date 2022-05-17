@@ -5,6 +5,7 @@ import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.SubTask;
 import ru.yandex.praktikum.task.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,41 +13,42 @@ import java.util.TreeSet;
 
 public interface TaskManager extends Managers {
 
-    void createTask(Task task) throws ManagerSaveException;
+    void createTask(Task task) throws IOException, InterruptedException;
 
-    void createEpicTask(EpicTask epicTask) throws ManagerSaveException;
+    void createEpicTask(EpicTask epicTask) throws IOException, InterruptedException;
 
-    void createSubTask(SubTask subTask) throws ManagerSaveException;
+    void createSubTask(SubTask subTask) throws IOException, InterruptedException;
 
-    void clearAllTask() throws ManagerSaveException;
+    void clearAllTask() throws IOException, InterruptedException;
 
-    Task getTask(Long id) throws ManagerSaveException;
+    Task getTask(Long id) throws IOException, InterruptedException;
 
-    EpicTask getEpicTask(Long id) throws ManagerSaveException;
+    EpicTask getEpicTask(Long id) throws IOException, InterruptedException;
 
-    SubTask getSubTask(Long id) throws ManagerSaveException;
+    SubTask getSubTask(Long id) throws IOException, InterruptedException;
 
-    void updateTask(Task task) throws ManagerSaveException;
+    void updateTask(Task task) throws IOException, InterruptedException;
 
-    void updateSubTask(SubTask subTask) throws ManagerSaveException;
+    void updateSubTask(SubTask subTask) throws IOException, InterruptedException;
 
-    void updateEpicTask(EpicTask epicTask) throws ManagerSaveException;
+    void updateEpicTask(EpicTask epicTask) throws IOException, InterruptedException;
 
-    void deleteTasksOnId(Long id) throws ManagerSaveException;
+    void deleteTasksOnId(Long id) throws IOException, InterruptedException;
 
-    void deleteTask(Long id) throws ManagerSaveException;
+    void deleteTask(Long id) throws IOException, InterruptedException;
 
-    void deleteEpicTask(Long id) throws ManagerSaveException;
+    void deleteEpicTask(Long id) throws IOException, InterruptedException;
 
-    void deleteSubTask(Long id) throws ManagerSaveException;
+    void deleteSubTask(Long id) throws IOException, InterruptedException;
 
     ArrayList<SubTask> getListSubTaskFromEpic(Long idEpicTask);
+    ArrayList<SubTask> getListSubTask();
 
     ArrayList<Task> getListTask();
 
     ArrayList<EpicTask> getListEpicTask();
 
-    List<Task> getHistoryList() throws ManagerSaveException; // метод возврата списка последних просмотренных заданий
+    List<Task> getHistoryList() throws IOException, InterruptedException; // метод возврата списка последних просмотренных заданий
 
     HashMap<Long, Task> getTasks();
 

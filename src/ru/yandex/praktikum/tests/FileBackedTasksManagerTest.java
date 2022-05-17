@@ -1,5 +1,6 @@
 package ru.yandex.praktikum.tests;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.task.EpicTask;
@@ -11,6 +12,7 @@ import ru.yandex.praktikum.taskmanager.FileBackedTasksManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.io.IOException;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest {
     public FileBackedTasksManagerTest() throws ManagerSaveException {
@@ -33,7 +35,10 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
     private final SubTask subTask6 = new SubTask("sub6", "desc", TaskStatus.NEW, epicTask2.getId());
     private final SubTask subTask7 = new SubTask("sub7", "desc", TaskStatus.DONE, epicTask3.getId());
 
+@AfterAll
+void clear(){
 
+}
 
 
     @Test
@@ -45,7 +50,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
     }
 
     @Test
-    void checkAddInFile() throws ManagerSaveException {
+    void checkAddInFile() throws IOException, InterruptedException {
         assertTrue(fileBackedTasksManager.getHistoryList().isEmpty(), "Список не пустой");
         assertTrue(fileBackedTasksManager.getAllTasks().isEmpty(), "Список не пустой");
         fileBackedTasksManager.createTask(task1);
@@ -91,18 +96,10 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
                 + " от запрошенных задач задач");
         assertEquals(13, fileBackedTasksManager.getHistoryList().size(), "размер HistoryList() отличается"
                 + " от запрошенных задач задач");
-        System.out.println("Список задач после сохранения:");
-        for (Task task : fileBackedTasksManager.getAllTasks()) {
-            System.out.println(task);
-        }
-        System.out.println("история после сохранения:");
-        for (Task task : fileBackedTasksManager.getHistoryList()) {
-            System.out.println(task);
-        }
     }
 
     @Test
-    void checkLoadFromFile() throws ManagerSaveException {
+    void checkLoadFromFile() throws IOException, InterruptedException {
         assertFalse(fileBackedTasksManager1.getHistoryList().isEmpty(), "Список истории пустой после загрузки из файла");
         assertFalse(fileBackedTasksManager1.getAllTasks().isEmpty(), "Список задач пустой после загрузки из файла");
         fileBackedTasksManager1.createTask(task1);
@@ -111,14 +108,5 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
         fileBackedTasksManager1.getTask(task1.getId());
         fileBackedTasksManager1.getTask(task2.getId());
         fileBackedTasksManager1.getTask(task3.getId());
-        System.out.println("Список задач после загрузки:");
-        for (int i = 0; i < fileBackedTasksManager1.getAllTasks().size(); i++) {
-            System.out.println((i + 1) + ": " + fileBackedTasksManager1.getAllTasks().get(i));
-        }
-
-        System.out.println("история после загрузки:");
-        for (int i = 0; i < fileBackedTasksManager1.getHistoryList().size(); i++) {
-            System.out.println((i + 1) + ": " + fileBackedTasksManager1.getHistoryList().get(i));
-        }
     }
 }
