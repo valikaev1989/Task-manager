@@ -2,7 +2,6 @@ package ru.yandex.praktikum.taskmanager;
 
 import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.allinterface.HistoryManager;
-import ru.yandex.praktikum.allinterface.Managers;
 import ru.yandex.praktikum.allinterface.TaskManager;
 import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.Task;
@@ -50,7 +49,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTaskInHistory(long id) {
+    public void removeTaskInHistory(long id) throws IOException, InterruptedException {
         historyManager.remove(id);
     }
 
@@ -115,7 +114,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addInDateList(Task task) {
+    public void addInDateList(Task task) throws IOException, InterruptedException {
         if (checkAddTime(task)) {
             prioritizedTasks.add(task);
         }
@@ -152,6 +151,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public Task getAnyTaskById(Long id) {
+        if (epics.containsKey(id)) {
+            return epics.get(id);
+        }
+        if (tasks.containsKey(id)) {
+            return tasks.get(id);
+        }
+        return subTasks.getOrDefault(id, null);
+    }
+
+    @Override
     public void createSubTask(SubTask subTask) throws IOException, InterruptedException {
         if (subTask != null) {
             if (subTask.getClass().equals(SubTask.class)) {
@@ -176,7 +186,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearAllTask() throws IOException, InterruptedException {
-
         for (Task task : getListTask()) {
             if (getHistoryList().contains(task)) {
                 removeTaskInHistory(task.getId());
@@ -190,6 +199,7 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.clear();
         epics.clear();
         subTasks.clear();
+        prioritizedTasks.clear();
     }
 
     @Override

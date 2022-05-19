@@ -7,25 +7,25 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class KVClient {
-    HttpClient httpClient;
-    String API_Token;
-    String URL;
+   private final HttpClient httpClient;
+   private final String apiToken;
+   private final String url;
 
-    public KVClient(String URL) throws IOException, InterruptedException {
-        this.URL = URL;
+    public KVClient(String url) throws IOException, InterruptedException {
+        this.url = url;
         httpClient = HttpClient.newHttpClient();
 
-        URI url = URI.create(this.URL + "/register");
+        URI url1 = URI.create(this.url + "/register");
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(url)
+                .uri(url1)
                 .GET()
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        API_Token = response.body();
+        apiToken = response.body();
     }
 
     public void put(String key, String json) throws IOException, InterruptedException {
-        URI url = URI.create(this.URL + "/save/" + key + "?API_TOKEN=" + API_Token);
+        URI url = URI.create(this.url + "/save/" + key + "?API_TOKEN=" + apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -34,7 +34,7 @@ public class KVClient {
     }
 
     public String load(String key) throws IOException, InterruptedException {
-        URI url = URI.create(this.URL + "/load/" + key + "?API_TOKEN=" + API_Token);
+        URI url = URI.create(this.url + "/load/" + key + "?API_TOKEN=" + apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .GET()

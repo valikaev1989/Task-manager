@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
-public interface TaskManager extends Managers {
-
+public interface TaskManager  {
+    public Task getAnyTaskById(Long id);
     void createTask(Task task) throws IOException, InterruptedException;
 
     void createEpicTask(EpicTask epicTask) throws IOException, InterruptedException;
@@ -60,9 +60,9 @@ public interface TaskManager extends Managers {
 
     HistoryManager getHistoryManager();
 
-    void removeTaskInHistory(long id);
+    void removeTaskInHistory(long id) throws IOException, InterruptedException;
 
-    void addInDateList(Task task);
+    void addInDateList(Task task) throws IOException, InterruptedException;
 
     TreeSet<Task> getPrioritizedTasks();
 

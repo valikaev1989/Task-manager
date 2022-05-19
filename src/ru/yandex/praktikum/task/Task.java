@@ -1,6 +1,8 @@
 package ru.yandex.praktikum.task;
 
 
+import org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -14,6 +16,7 @@ public class Task implements Comparable<Task> {
     private int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private TypeTasks type = TypeTasks.TASK;
 
     public Task(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime) {
         this.nameTask = nameTask;
@@ -53,6 +56,14 @@ public class Task implements Comparable<Task> {
 
     public Task() {
         status = TaskStatus.NEW;
+    }
+
+    public TypeTasks getType() {
+        return type;
+    }
+
+    public void setType(TypeTasks type) {
+        this.type = type;
     }
 
     public Long getId() {
@@ -120,7 +131,7 @@ public class Task implements Comparable<Task> {
     @Override
     public String toString() {
         String endTime = startTime == null ? null : getEndTime().toString();
-        return id.toString() + splitter + TypeTasks.Task + splitter + nameTask + splitter
+        return id.toString() + splitter + type + splitter + nameTask + splitter
                 + status + splitter + description + splitter + startTime + splitter + duration + splitter + endTime;
     }
 

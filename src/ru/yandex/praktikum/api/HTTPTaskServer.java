@@ -8,17 +8,21 @@ import ru.yandex.praktikum.allinterface.TaskManager;
 import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.SubTask;
 import ru.yandex.praktikum.task.Task;
+import ru.yandex.praktikum.taskmanager.Managers;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 
-import static ru.yandex.praktikum.allinterface.Managers.getHTTPTaskManager;
 
 public class HTTPTaskServer {
     private static final int PORT = 8080;
     private static HttpServer httpServer;
     private static Gson gson = new Gson();
-    private static TaskManager taskManager;
+    private final TaskManager taskManager;
+
+    public TaskManager getTaskManager() {
+        return taskManager;
+    }
 
     public HTTPTaskServer() throws IOException, InterruptedException {
         httpServer = HttpServer.create();
@@ -32,8 +36,7 @@ public class HTTPTaskServer {
         gsonBuilder.setPrettyPrinting();
         gsonBuilder.serializeNulls();
         gson = gsonBuilder.create();
-        taskManager = getHTTPTaskManager();
-//        taskManager = Managers.getFileBackedTasksManager();
+        taskManager = Managers.getDefault();
     }
 
     public void start() {
@@ -41,7 +44,11 @@ public class HTTPTaskServer {
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
     }
 
-     static class TasksHandler implements HttpHandler {
+    public void stop() {
+        httpServer.stop(0);
+    }
+
+    class TasksHandler implements HttpHandler {
 
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
@@ -49,6 +56,7 @@ public class HTTPTaskServer {
             System.out.println("Началась обработка " + method + " /tasks запроса от клиента.");
             String URL = httpExchange.getRequestURI().toString();
             System.out.println(URL);
+
             String response = "";
             int responseCode = 200;
             switch (method) {
@@ -57,9 +65,6 @@ public class HTTPTaskServer {
                     if (URL.contains("sorted")) {
                         String isSorted = URL.split("=")[1];
                         if (isSorted.equals("true")) {
-                            for (Task task : taskManager.getPrioritizedTasks()) {
-                                System.out.println(task);
-                            }
                             response = gson.toJson(taskManager.getPrioritizedTasks());
                         } else {
                             response = gson.toJson(taskManager.getAllTasks());
@@ -93,7 +98,7 @@ public class HTTPTaskServer {
         }
     }
 
-     static class HistoryHandler implements HttpHandler {
+    class HistoryHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -113,16 +118,19 @@ public class HTTPTaskServer {
                 case "DELETE":
                     if (URL.contains("id")) {
                         String id = URL.split("=")[1];
-                        taskManager.removeTaskInHistory(Long.parseLong(id));
                         try {
-                            if (!taskManager.getHistoryList().contains(taskManager.getTasks().get(Long.parseLong(id)))) {
+                            Task task = taskManager.getAnyTaskById(Long.valueOf(id));
+                            if (taskManager.getHistoryList().contains(task)) {
+                                taskManager.removeTaskInHistory(Long.parseLong(id));
                                 response = "задача удалена из истории";
                             } else {
                                 response = "задача не удалена из истории";
                             }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
                     } else {
                         responseCode = 400;
                     }
@@ -138,7 +146,7 @@ public class HTTPTaskServer {
     }
 
 
-    static class TaskHandler implements HttpHandler {
+    class TaskHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -172,9 +180,13 @@ public class HTTPTaskServer {
                     if (URL.contains("id")) {
                         Long id = Long.parseLong(URL.split("=")[1]);
                         try {
-                            response = gson.toJson(taskManager.getTask(id));
+                            if (taskManager.getTasks().containsKey(id)) {
+                                response = gson.toJson(taskManager.getTask(id));
+                            } else {
+                                response = "нет такой задачи";
+                            }
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            System.out.println("ошибка запроса id");
                         }
                     } else if (URL.equals("/tasks/task")) {
                         response = gson.toJson(taskManager.getListTask());
@@ -198,15 +210,16 @@ public class HTTPTaskServer {
                     if (URL.contains("id")) {
                         Long id = Long.parseLong(URL.split("=")[1]);
                         try {
-                            taskManager.deleteTask(id);
+                            if (taskManager.getTasks().containsKey(id)) {
+                                taskManager.deleteTask(id);
+                                response = "задача удалена";
+                            } else {
+                                responseCode = 404;
+                                response = "задача не удалена!";
+                            }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }
-                        if (!taskManager.getTasks().containsKey(id)) {
-                            response = "задача удалена";
-                        } else {
-                            responseCode = 404;
-                            response = "задача не удалена!";
                         }
                     }
                     break;
@@ -221,7 +234,7 @@ public class HTTPTaskServer {
     }
 
 
-    static class EpicTaskHandler implements HttpHandler {
+    class EpicTaskHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
 
@@ -255,7 +268,12 @@ public class HTTPTaskServer {
                     if (URL.contains("id")) {
                         Long id = Long.parseLong(URL.split("=")[1]);
                         try {
-                            response = gson.toJson(taskManager.getEpicTask(id));
+                            if (taskManager.getEpics().containsKey(id)) {
+                                response = gson.toJson(taskManager.getEpicTask(id));
+                            } else {
+                                response = "нет такой задачи";
+                                responseCode = 404;
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -267,15 +285,15 @@ public class HTTPTaskServer {
                     if (URL.contains("id")) {
                         Long id = Long.parseLong(URL.split("=")[1]);
                         try {
-                            taskManager.deleteEpicTask(id);
+                            if (taskManager.getEpics().containsKey(id)) {
+                                taskManager.deleteEpicTask(id);
+                                response = "задача удалена";
+                            } else {
+                                responseCode = 404;
+                                response = "задача не удалена!";
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }
-                        if (!taskManager.getEpics().containsKey(id)) {
-                            response = "задача удалена";
-                        } else {
-                            responseCode = 404;
-                            response = "задача не удалена!";
                         }
                     }
                     break;
@@ -289,7 +307,7 @@ public class HTTPTaskServer {
         }
     }
 
-    static class SubTaskHandler implements HttpHandler {
+    class SubTaskHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
             String method = httpExchange.getRequestMethod();
@@ -319,7 +337,7 @@ public class HTTPTaskServer {
                     }
                     break;
                 case "GET":
-                    if (URL.contains("epic")) {
+                    if (URL.contains("list")) {
                         Long id = Long.parseLong(URL.split("=")[1]);
                         EpicTask epicTask = taskManager.getEpics().get(id);
                         response = gson.toJson(taskManager.getListSubTaskFromEpic(epicTask.getId()));
@@ -350,15 +368,16 @@ public class HTTPTaskServer {
                     if (URL.contains("id")) {
                         Long id = Long.parseLong(URL.split("=")[1]);
                         try {
-                            taskManager.deleteSubTask(id);
+                            if (taskManager.getSubTasks().containsKey(id)) {
+                                taskManager.deleteSubTask(id);
+                                response = "задача удалена";
+                            } else {
+                                responseCode = 404;
+                                response = "задача не удалена!";
+                            }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }
-                        if (!taskManager.getSubTasks().containsKey(id)) {
-                            response = "задача удалена";
-                        } else {
-                            responseCode = 404;
-                            response = "задача не удалена!";
                         }
                     }
                     break;

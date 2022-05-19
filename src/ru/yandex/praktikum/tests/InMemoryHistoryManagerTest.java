@@ -2,7 +2,6 @@ package ru.yandex.praktikum.tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.praktikum.exception.ManagerSaveException;
 import ru.yandex.praktikum.task.EpicTask;
 import ru.yandex.praktikum.task.SubTask;
 import ru.yandex.praktikum.task.Task;

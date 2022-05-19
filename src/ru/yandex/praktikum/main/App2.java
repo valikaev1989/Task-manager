@@ -8,12 +8,13 @@ import ru.yandex.praktikum.task.Task;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class App2 {
-    String URL = "http://localhost:8078";
-    HTTPTaskManager httpTaskManager = new HTTPTaskManager(URL);
+    private final String URL = "http://localhost:8078";
+    private HTTPTaskManager httpTaskManager = new HTTPTaskManager(URL);
     private final Scanner scanner = new Scanner(System.in);
 
     public App2() throws IOException, InterruptedException {
@@ -27,11 +28,9 @@ public class App2 {
         switch (command) {
             case 1:
                 check();
-                httpTaskManager.saveOnServer();
                 httpTaskManager.loadFromServer();
                 break;
             case 2:
-                httpTaskManager.loadFromServer();
                 httpTaskManager = HTTPTaskManager.loadInServerFromSavedTasks();
                 printAllTask();
                 System.out.println(" ");
@@ -78,41 +77,26 @@ public class App2 {
 
         httpTaskManager.createEpicTask(epic1);
         httpTaskManager.createEpicTask(epic2);
-        httpTaskManager.createTask(task1);
-        httpTaskManager.createTask(task5);
-        httpTaskManager.createTask(task2);
-        httpTaskManager.createTask(task6);
-        httpTaskManager.createTask(task3);
-        httpTaskManager.createTask(task4);
-        httpTaskManager.createTask(task8);
-        httpTaskManager.createTask(task7);
-        httpTaskManager.createTask(task9);
+        for (Task task : Arrays.asList(task1, task5, task2, task6, task3, task4, task8, task7, task9)) {
+            httpTaskManager.createTask(task);
+        }
         SubTask subTask1 = new SubTask("sub1", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 40), epic1.getId());
         SubTask subTask5 = new SubTask("sub5", "desc", epic1.getId());
         SubTask subTask2 = new SubTask("sub2", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 45), epic1.getId());
         SubTask subTask3 = new SubTask("sub3", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 50), epic2.getId());
         SubTask subTask4 = new SubTask("sub4", "desc", 1, LocalDateTime.of(2022, 5, 11, 10, 55), epic1.getId());
         SubTask subTask6 = new SubTask("sub6", "desc", epic2.getId());
-        httpTaskManager.createSubTask(subTask1);
-        httpTaskManager.createSubTask(subTask5);
-        httpTaskManager.createSubTask(subTask2);
-        httpTaskManager.createSubTask(subTask3);
-        httpTaskManager.createSubTask(subTask4);
-        httpTaskManager.createSubTask(subTask6);
+        for (SubTask subTask : Arrays.asList(subTask1, subTask5, subTask2, subTask3, subTask4, subTask6)) {
+            httpTaskManager.createSubTask(subTask);
+        }
         httpTaskManager.getEpicTask(epic1.getId());
         httpTaskManager.getEpicTask(epic2.getId());
-        httpTaskManager.getTask(task1.getId());
-        httpTaskManager.getTask(task2.getId());
-        httpTaskManager.getTask(task3.getId());
-        httpTaskManager.getTask(task4.getId());
-        httpTaskManager.getTask(task5.getId());
-        httpTaskManager.getTask(task6.getId());
-        httpTaskManager.getSubTask(subTask1.getId());
-        httpTaskManager.getSubTask(subTask5.getId());
-        httpTaskManager.getSubTask(subTask2.getId());
-        httpTaskManager.getSubTask(subTask3.getId());
-        httpTaskManager.getSubTask(subTask4.getId());
-        httpTaskManager.getSubTask(subTask5.getId());
+        for (Task task : Arrays.asList(task1, task2, task3, task4, task5, task6)) {
+            httpTaskManager.getTask(task.getId());
+        }
+        for (SubTask subTask : Arrays.asList(subTask1, subTask5, subTask2, subTask3, subTask4, subTask5)) {
+            httpTaskManager.getSubTask(subTask.getId());
+        }
     }
 
 

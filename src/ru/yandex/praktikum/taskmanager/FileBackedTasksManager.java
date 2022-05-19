@@ -15,13 +15,13 @@ import java.util.List;
 import static ru.yandex.praktikum.utils.CSVutil.splitter;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
-    private File fileName;// путь к файлу сохранения задач
+    private final File fileName;// путь к файлу сохранения задач
 
     public FileBackedTasksManager(File fileName) {
         this.fileName = fileName;
     }
 
-    public void save() throws IOException, InterruptedException {//метод записи в файл сохранения
+    protected void save() throws IOException, InterruptedException {//метод записи в файл сохранения
         try (Writer fileWriter = new FileWriter(fileName, StandardCharsets.UTF_8)) {
             fileWriter.write("id" + splitter + "type" + splitter + "name" + splitter + "status" + splitter
                     + "description" + splitter
@@ -43,11 +43,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return fileBackedTasksManager;
     }
 
-    public void readForHTTPTaskManager() throws ManagerSaveException {
-        readFile();
-    }
-
-    protected void readFile() throws ManagerSaveException {//заполнение менеджера задач и истории просмотра из файла
+    private void readFile() throws ManagerSaveException {//заполнение менеджера задач и истории просмотра из файла
         long identifierNumber = 0;
         try (BufferedReader fileReader = new BufferedReader(new FileReader(fileName, StandardCharsets.UTF_8))) {
 
@@ -125,9 +121,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             endTime = LocalDateTime.parse(split[7]);
         }
         int duration = Integer.parseInt(split[6]);
-        if (typeTasks.equals(TypeTasks.Task)) {
+        if (typeTasks.equals(TypeTasks.TASK)) {
             task = new Task(nameTask, description, TaskStatus.valueOf(split[3]), id, duration, startTime);
-        } else if (typeTasks.equals(TypeTasks.EpicTask)) {
+        } else if (typeTasks.equals(TypeTasks.EPICTASK)) {
             task = new EpicTask(nameTask, description, TaskStatus.valueOf(split[3]), id, duration, startTime, endTime);
         } else {
             long epicId = Long.parseLong(split[8]);
@@ -263,9 +259,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     @Override
     public List<Task> getHistoryList() throws IOException, InterruptedException {
         super.getHistoryList();
-        save();
         return super.getHistoryList();
 
+    }
+
+    @Override
+    public Task getAnyTaskById(Long id) {
+        return super.getAnyTaskById(id);
     }
 
     @Override

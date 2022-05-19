@@ -35,10 +35,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
     private final SubTask subTask6 = new SubTask("sub6", "desc", TaskStatus.NEW, epicTask2.getId());
     private final SubTask subTask7 = new SubTask("sub7", "desc", TaskStatus.DONE, epicTask3.getId());
 
-@AfterAll
-void clear(){
 
-}
 
 
     @Test

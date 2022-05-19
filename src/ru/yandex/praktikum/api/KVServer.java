@@ -27,6 +27,10 @@ public class KVServer {
         server.createContext("/load", this::load);
     }
 
+    public void stop() {
+        server.stop(0);
+    }
+
     private void load(HttpExchange h) {
         try {
             String text;

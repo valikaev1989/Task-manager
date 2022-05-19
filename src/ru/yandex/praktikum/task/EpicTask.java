@@ -14,17 +14,21 @@ public class EpicTask extends Task {
     public EpicTask(String nameTask, String description, TaskStatus status, Long id, int duration, LocalDateTime startTime, LocalDateTime epicEndTime) {
         super(nameTask, description, status, id, duration, startTime);
         this.epicEndTime = epicEndTime;
+        setType(TypeTasks.EPICTASK);
     }
 
     public EpicTask(String nameTask, String description, TaskStatus status, Long id) {
         super(nameTask, description, status, id);
+        setType(TypeTasks.EPICTASK);
     }
 
     public EpicTask(String nameTask, String description) {
         super(nameTask, description);
+        setType(TypeTasks.EPICTASK);
     }
 
     public EpicTask() {
+        setType(TypeTasks.EPICTASK);
     }
 
     public LocalDateTime getEpicEndTime() {
@@ -65,8 +69,8 @@ public class EpicTask extends Task {
 
     @Override
     public String toString() {
-            return getId().toString() + splitter + TypeTasks.EpicTask + splitter + getNameTask() +
-                    splitter + getStatus() + splitter + getDescription() + splitter +
-                    getStartTime() + splitter + getDuration() + splitter +epicEndTime;
+        return getId().toString() + splitter + getType() + splitter + getNameTask() +
+                splitter + getStatus() + splitter + getDescription() + splitter +
+                getStartTime() + splitter + getDuration() + splitter + epicEndTime;
     }
 }

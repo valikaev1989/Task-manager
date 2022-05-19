@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.node;
+package ru.yandex.praktikum.historymanager;
 
 import ru.yandex.praktikum.task.Task;
 

@@ -19,6 +19,7 @@ public class App {
     public void start() throws IOException, InterruptedException {
         System.out.println("1 - запуск клиента и запись на сервер");
         System.out.println("2- загрузка из файла SavedTasks.csv на сервер");
+        System.out.println("3- проверка приоритета задач");
         int command = scanner.nextInt();
         switch (command) {
             case 1:
@@ -56,7 +57,7 @@ public class App {
                 for (Task task : fileBackedTasksManager.getPrioritizedTasks()) {
                     System.out.println(task);
                 }
-                new HTTPTaskServer().start();
+//                new HTTPTaskServer().start();
                 break;
             default:
                 System.out.println("не верный выбор");

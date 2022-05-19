@@ -65,6 +65,7 @@ class EpicTaskUpdateStatusTest {
         assertEquals(TaskStatus.DONE, epic1.getStatus());
         inMemoryTaskManager.deleteTasksOnId(subTask2.getId());
     }
+
     @Test
     public void shouldCheckInProgressStatusEpicTask2() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask1);
@@ -78,6 +79,7 @@ class EpicTaskUpdateStatusTest {
         inMemoryTaskManager.deleteTasksOnId(subTask2.getId());
         inMemoryTaskManager.deleteTasksOnId(subTask4.getId());
     }
+
     @Test
     public void shouldCheckNewStatusEpicTask2() throws IOException, InterruptedException {
         inMemoryTaskManager.createSubTask(subTask1);
