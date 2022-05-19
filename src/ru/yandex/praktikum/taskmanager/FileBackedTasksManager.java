@@ -50,7 +50,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             while (fileReader.ready()) {
                 String q = fileReader.readLine();
                 String firstLine = "id;type;name;status;description;startTime;duration;endTime;epic";
-                String w = "Task";
+                String w = "TASK";
                 if (q.isBlank() || firstLine.equals(q)) {//пропуск при чтении первой и пустых строк
                 } else if (q.contains(w)) {//заполнение коллекций менеджера задачами из файла
                     Task taskFromFile = fromString(q);
