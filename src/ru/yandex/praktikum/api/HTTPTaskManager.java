@@ -90,7 +90,7 @@ public class HTTPTaskManager extends FileBackedTasksManager implements TaskManag
         }
     }
 
-    private ArrayList<Task> parseTasksJsonToTasksList(String json) {
+    public ArrayList<Task> parseTasksJsonToTasksList(String json) {
         ArrayList<Task> result = new ArrayList<>();
         JsonElement jsonElement = JsonParser.parseString(json);
         JsonArray jsonArray = jsonElement.getAsJsonArray();
